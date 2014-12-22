@@ -3,6 +3,7 @@ from lxml import etree
 import datetime
 import time
 import os
+import sys
 from ConfigParser import *
 import shutil
 
@@ -277,7 +278,7 @@ def genAccounts():
 
 
 def makeXMLTransactions():
-    currentbookingid = BOOKINGID
+    currentBookingID = BOOKINGID
 
     fobj = open(INPUTDIR + "BuchungF1.txt", "r")
     fobj.readline()
@@ -292,16 +293,18 @@ def makeXMLTransactions():
     files = len(Bookings) / maxBookingsPerFile
 
     for x in range(0, files + 1):
-        print x * maxBookingsPerFile
+        print "Creating Files for Bookings from "+str(x * maxBookingsPerFile)
 
         xml = E.GLTransactions(
-            *genGLTransactions(Bookings[x * maxBookingsPerFile:(x + 1) * maxBookingsPerFile], currentbookingid))
+            *genGLTransactions(Bookings[x * maxBookingsPerFile:(x + 1) * maxBookingsPerFile], currentBookingID))
         fobj = open(OUTPUTDIR + "GLTransactions" + str(x) + ".xml", "w")        
         fobj.write("<eExact>\n")
         fobj.write(etree.tostring(xml, pretty_print=True))
         fobj.write("</eExact>")
         fobj.close()
-        currentbookingid += maxBookingsPerFile
+        currentBookingID += maxBookingsPerFile
+    
+    return BOOKINGID + len(Bookings)
 
 
 def makeXMLAccounts():
@@ -397,7 +400,6 @@ VAT_OUTEU = ConfigSectionMap("VATIDS")['vat_outeu'].split(',')
 
 ALL_VAT_CODES = (VAT_LOW, VAT_HIGH, VAT_ZERO, VAT_INEU, VAT_OUTEU)
 
-
 BOOKINGID = int(ConfigSectionMap("COUNTERS")['bookingid'])
 
 # Zuerst alle alten Daten im OUTPUT Verzeichniss loeschen
@@ -411,15 +413,33 @@ ensure_dir(INPUTDIR)
 ensure_dir(OUTPUTDIR)
 ensure_dir(OUTPUTDIR_BACKUP)
 
-makeXMLTransactions()
+print "# BOOKKEEPING CONVERTER V1.0"
+print "# converts .txt files from easyVET to .xml files for exact"
+print '##########################################################################\n'
+print "Please place the BuchungF1.txt and DebitorF1.txt export file from easyVET in the "+INPUTDIR+" Folder and press any key to continue"
+raw_input()
+print "Files will be converted...."
 makeXMLAccounts()
+newbookingid = makeXMLTransactions()
+print "Conversion finished!"
+print "WARNING! Files to import have been created in the "+OUTPUTDIR+" Folder. Please make sure that all accounts which are listed in the file AccountsToCreate.txt are created up front in exact"
+i = str(raw_input("Please import files now to EXACT. Was the import sucessfull confirm it with y otherwise enter n "))
 
-filelist = [ f for f in os.listdir(OUTPUTDIR)]
-for f in filelist:
-    shutil.copy(OUTPUTDIR+f,OUTPUTDIR_BACKUP+timestamp+"_"+f[:-4]+".xml")
+if i == "y":
+    Config = ConfigParser()
+    Config.read(CONFIGFILE)
+    Config.set('COUNTERS', 'BOOKINGID', str(newbookingid))
+    cfgfile = open("./config.ini", "w")
+    Config.write(cfgfile)
+    cfgfile.close()
+
+    print "Export and Import was sucessfull files will be now backuped to "+OUTPUTDIR_BACKUP+" folder"
+    filelist = [ f for f in os.listdir(OUTPUTDIR)]
+    for f in filelist:
+        shutil.copy(OUTPUTDIR+f,OUTPUTDIR_BACKUP+timestamp+"_"+f[:-4]+".xml")
+
+raw_input("Press any key to close the converter")
 
 # TODO: Export fuer mehrere firmen
-# TODO: Geht die Booking ID Alphanumerisch
 # TODO: User Interface
-# TODO: Booking Counter korrekt setzten
 # TODO: ACCOUNTS TO CREATE SORTIEREN
