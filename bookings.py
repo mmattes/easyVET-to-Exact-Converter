@@ -2,14 +2,13 @@ from lxml.builder import E
 from lxml import etree
 import datetime
 import os
-
+from ConfigParser import *
 
 
 #
 # CLASS Accounts
 # Aufbau wie es Exact benoetigt
 ##########################################################################
-
 class Account(object):
 
     def __init__(self, code, name, searchcode):
@@ -34,6 +33,7 @@ class GLTransaction(object):
 # CLASS GLTransactionLine
 # Aufbau wie es Exact benoetigt
 ##########################################################################
+
 
 class GLTransactionLine(object):
 
@@ -142,9 +142,9 @@ class Booking(object):
 
     def getTransactionType(self):
 
-        #20=Sales entry
-        #40=cash flow
-        #90=other
+        # 20=Sales entry
+        # 40=cash flow
+        # 90=other
         if int(self.debitaccount) == 1010 or int(self.creditaccount) == 1010:
             return "40"
         if int(self.debitaccount) == 1104 or int(self.creditaccount) == 1104:
@@ -223,9 +223,9 @@ def appendGLTransactionLines(GLTransaction):
 
 
 def genAccounts():
-    fobj = open(INPUTDIR+"DebitorF1.txt", "r")
+    fobj = open(INPUTDIR + "DebitorF1.txt", "r")
 
-    acctocreate = open(OUTPUTDIR+"AccountsToCreate.txt","w")
+    acctocreate = open(OUTPUTDIR + "AccountsToCreate.txt", "w")
     Accounts = []
 
     fobj.readline()
@@ -265,11 +265,12 @@ def genAccounts():
             E.Account(E.Name(a.name), code=a.code, searchcode=a.searchcode, status="C"))
     return result
 
+
 def makeXMLTransactions():
     currentbookingid = 100001
     maxBookingsPerFile = 1000
 
-    fobj = open(INPUTDIR+"BuchungF1.txt", "r")
+    fobj = open(INPUTDIR + "BuchungF1.txt", "r")
     fobj.readline()
 
     Bookings = []
@@ -286,21 +287,23 @@ def makeXMLTransactions():
 
         xml = E.GLTransactions(
             *genGLTransactions(Bookings[x * maxBookingsPerFile:(x + 1) * maxBookingsPerFile], currentbookingid))
-        fobj = open(OUTPUTDIR+"GLTransactions" + str(x) + ".xml", "w")
+        fobj = open(OUTPUTDIR + "GLTransactions" + str(x) + ".xml", "w")
         fobj.write("<eExact>\n")
         fobj.write(etree.tostring(xml, pretty_print=True))
         fobj.write("</eExact>")
         fobj.close()
         currentbookingid += maxBookingsPerFile
 
+
 def makeXMLAccounts():
     xml = E.Accounts(*genAccounts())
-    
-    fobj = open(OUTPUTDIR+"Relaties.xml", "w")
+
+    fobj = open(OUTPUTDIR + "Relaties.xml", "w")
     fobj.write("<eExact>")
     fobj.write(etree.tostring(xml, pretty_print=True))
     fobj.write("</eExact>")
     fobj.close()
+
 
 def ensure_dir(folder):
     dir = os.path.dirname(folder)
@@ -308,14 +311,52 @@ def ensure_dir(folder):
         os.makedirs(dir)
 
 
+def ConfigSectionMap(section):
+    Config = ConfigParser()
+    Config.read(CONFIGFILE)
+    dict1 = {}
+    options = Config.options(section)
+    for option in options:
+        try:
+            dict1[option] = Config.get(section, option)
+            if dict1[option] == -1:
+                DebugPrint("skip: %s" % option)
+        except:
+            print("exception on %s!" % option)
+            dict1[option] = None
+    return dict1
 
 #
-#
-###############################
+# MAIN SECTION
+# Zuerst die Konfiguration dann der aufruf der einzelnen Programme
+##########################################################################
 
-INPUTDIR = "./INPUT/"
-OUTPUTDIR = "./OUTPUT/"
+CONFIGFILE = "./config.ini"
 
+if not os.path.exists(CONFIGFILE):
+    cfgfile = open("./config.ini","w")
+    Config = ConfigParser()
+
+    Config.add_section('DIRS')
+    Config.set('DIRS','INPUTDIR','./INPUT/')
+    Config.set('DIRS','OUTPUTDIR','./OUTPUT/')
+
+    Config.add_section('ACCOUNTS')
+    Config.set('ACCOUNTS','CASH','1000,1001,1002,1003')
+    Config.set('ACCOUNTS','BANK','1200,1201,1202,1203')
+    Config.set('ACCOUNTS','INTERIM','1360')
+    Config.set('ACCOUNTS','DEBTORS','12000')
+    Config.set('ACCOUNTS','SALESJOURNAL','1300')
+
+    Config.add_section('COUNTERS')
+    Config.set('COUNTERS','BOOKINGID','1')
+
+
+    Config.write(cfgfile)
+    cfgfile.close()
+
+INPUTDIR = ConfigSectionMap("DIRS")['inputdir']
+OUTPUTDIR = ConfigSectionMap("DIRS")['outputdir']
 
 ensure_dir(INPUTDIR)
 ensure_dir(OUTPUTDIR)
@@ -323,13 +364,12 @@ ensure_dir(OUTPUTDIR)
 makeXMLTransactions()
 makeXMLAccounts()
 
-
-
-
 # TODO: Configfile
+# TODO: Export für mehrere firmen
+# TODO: Geht die Booking ID Alphanumerisch
 # TODO: User Interface
 # TODO: Booking Counter korrekt setzten
 # TODO: Backup von Export Daten mit Timestamp
-# TODO: Steuersaetze ausland und andere abweichende steuersaetze 
+# TODO: Steuersaetze ausland und andere abweichende steuersaetze
 # TODO: Backup von Export Daten mit Timestamp
-# TODO: ACCOUNTS TO CREATE SORTIEREN 
+# TODO: ACCOUNTS TO CREATE SORTIEREN
