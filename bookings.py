@@ -1,8 +1,10 @@
 from lxml.builder import E
 from lxml import etree
 import datetime
+import time
 import os
 from ConfigParser import *
+import shutil
 
 
 #
@@ -55,7 +57,7 @@ class Booking(object):
 
     def __init__(self, amount, currency, vatcode, creditaccount, description, date, debitaccount, remark):
         self.amount = amount.replace(".", "").replace(",", ".")
-        self.vatcode = vatcode
+        self.vatcode = self.getVATCode(vatcode)
         self.currency = currency
         self.creditaccount = self.getAccountSerialized(creditaccount)
         self.description = description
@@ -71,73 +73,84 @@ class Booking(object):
         self.relation = self.getRelation(debitaccount, creditaccount)
         self.transactiontype = self.getTransactionType()
 
+    def getVATCode(self, vatcode):
+        if vatcode == "":
+            return VAT_ZERO[0]
+        elif vatcode == "1":
+            return VAT_LOW[0]
+        elif vatcode == "2":
+            return VAT_HIGH[0]
+        elif vatcode == "101":
+            return VAT_INEU[0]
+        elif vatcode == "102":
+            return VAT_INEU[0]
+        elif vatcode == "201":
+            return VAT_OUTEU[0]
+        elif vatcode == "202":
+            return VAT_OUTEU[0]
+        else:
+            print "ERROR: UNKOWN VATCODE"
+            return ""
+
     def getRelation(self, debitaccount, creditaccount):
-        if int(debitaccount) >= 12000:
+        if int(debitaccount) >= DEBTORS_ACCOUNTS:
             return debitaccount
-        elif int(creditaccount) >= 12000:
+        elif int(creditaccount) >= DEBTORS_ACCOUNTS:
             return creditaccount
         else:
             return ""
 
     def getDebitRelation(self, debitaccount):
-        if int(debitaccount) >= 12000:
+        if int(debitaccount) >= DEBTORS_ACCOUNTS:
             return debitaccount
         else:
             return ""
 
     def getCreditRelation(self, creditaccount):
-        if int(creditaccount) >= 12000:
+        if int(creditaccount) >= DEBTORS_ACCOUNTS:
             return creditaccount
         else:
             return ""
 
     def getAccountSerialized(self, account):
-        if int(account) >= 12000:
-            return "1300"
+        if int(account) >= DEBTORS_ACCOUNTS:
+            return SALESJOURNAL
         else:
             return account
 
     def getDebitAmount(self):
-        if self.debitaccount == "1300":
+        if self.debitaccount == SALESJOURNAL:
             return self.amount
         else:
             return self.getAmountExVat()
 
     def getCreditAmount(self):
-        if self.creditaccount == "1300":
+        if self.creditaccount == SALESJOURNAL:
             return str(float(self.amount) * -1)
         else:
             return str(float(self.getAmountExVat()) * -1)
 
     def getDebitVatCode(self):
-        if not self.debitaccount == "1300":
+        if not self.debitaccount == SALESJOURNAL:
             return self.vatcode
         else:
-            return ""
+            return VAT_ZERO[0]
 
     def getCreditVatCode(self):
-        if not self.creditaccount == "1300":
+        if not self.creditaccount == SALESJOURNAL:
             return self.vatcode
         else:
-            return ""
+            return VAT_ZERO[0]
 
     def getJournalCode(self):
+        for account in ACCOUNTS:
+            if self.debitaccount == account or self.creditaccount == account:
+                return account
+                break
 
-        # 1300 = Verkauf daher 70
-        # 2061 = Geldtransfer daher 90
-        # 1003 u 1004 = Kasse daher 10
-        # 1010 u 1104 = Bank daher 20
-        if int(self.debitaccount) == 1010 or int(self.creditaccount) == 1010:
-            return "1010"
-        if int(self.debitaccount) == 1104 or int(self.creditaccount) == 1104:
-            return "1104"
-        elif int(self.debitaccount) == 2061 or int(self.creditaccount) == 2061:
+        if self.debitaccount == INTERIM_ACCOUNT or self.creditaccount == INTERIM_ACCOUNT:
             return "90"
-        elif int(self.debitaccount) == 1003 or int(self.creditaccount) == 1003:
-            return "1003"
-        elif int(self.debitaccount) == 1004 or int(self.creditaccount) == 1004:
-            return "1004"
-        elif int(self.debitaccount) == 1300 or int(self.creditaccount) == 1300:
+        elif self.debitaccount == SALESJOURNAL or self.creditaccount == SALESJOURNAL:
             return "70"
 
     def getTransactionType(self):
@@ -145,37 +158,34 @@ class Booking(object):
         # 20=Sales entry
         # 40=cash flow
         # 90=other
-        if int(self.debitaccount) == 1010 or int(self.creditaccount) == 1010:
-            return "40"
-        if int(self.debitaccount) == 1104 or int(self.creditaccount) == 1104:
-            return "40"
-        elif int(self.debitaccount) == 2061 or int(self.creditaccount) == 2061:
+        for account in ACCOUNTS:
+            if self.debitaccount == account or self.creditaccount == account:
+                return "40"
+                break
+
+        if self.debitaccount == INTERIM_ACCOUNT or self.creditaccount == INTERIM_ACCOUNT:
             return "90"
-        elif int(self.debitaccount) == 1003 or int(self.creditaccount) == 1003:
-            return "40"
-        elif int(self.debitaccount) == 1004 or int(self.creditaccount) == 1004:
-            return "40"
-        elif int(self.debitaccount) == 1300 or int(self.creditaccount) == 1300:
+        elif self.debitaccount == SALESJOURNAL or self.creditaccount == SALESJOURNAL:
             return "20"
 
     def getAmountExVat(self):
-        if self.vatcode == "":
-            return self.amount
-        elif int(self.vatcode) == 1:
-            return str(float(self.amount) / 106 * 100)
-        elif int(self.vatcode) == 2:
-            return str(float(self.amount) / 121 * 100)
-        else:
-            return self.amount
+        for VATCODE in ALL_VAT_CODES:
+            if self.vatcode == VATCODE[0]:
+                return str(float(self.amount) / (100 + int(VATCODE[1])) * 100)
+                break
+
+#        if self.vatcode == "":
+#            return self.amount
+#        elif int(self.vatcode) == 1:
+#            return str(float(self.amount) / 106 * 100)
+#        elif int(self.vatcode) == 2:
+#            return str(float(self.amount) / 121 * 100)
+#        else:
+#            return self.amount
 
     def getISODate(self):
         return datetime.date(int(self.date[6:]), int(self.date[3:-5]), int(self.date[:-8])).isoformat()
 
-    def isSameBooking(self, Booking):
-        if self.date == Booking.date and self.description == Booking.description and self.getJournalCode() == Booking.getJournalCode():
-            return True
-        else:
-            return False
 
 #
 # Generiert aus den buchungen die eigentlichen Exact Konformen
@@ -249,10 +259,10 @@ def genAccounts():
         else:
             searchcode = ""
 
-        if code != "" and int(code) >= 12000:
+        if code != "" and int(code) >= DEBTORS_ACCOUNTS:
             Accounts.append(Account(code.decode(
                 "utf-8", "ignore"), name.decode("utf-8", "ignore"), searchcode.decode("utf-8", "ignore")))
-        elif code != "" and int(code) < 12000:
+        elif code != "" and int(code) < DEBTORS_ACCOUNTS:
             acctocreate.write(line)
 
     fobj.close()
@@ -267,8 +277,7 @@ def genAccounts():
 
 
 def makeXMLTransactions():
-    currentbookingid = 100001
-    maxBookingsPerFile = 1000
+    currentbookingid = BOOKINGID
 
     fobj = open(INPUTDIR + "BuchungF1.txt", "r")
     fobj.readline()
@@ -287,7 +296,7 @@ def makeXMLTransactions():
 
         xml = E.GLTransactions(
             *genGLTransactions(Bookings[x * maxBookingsPerFile:(x + 1) * maxBookingsPerFile], currentbookingid))
-        fobj = open(OUTPUTDIR + "GLTransactions" + str(x) + ".xml", "w")
+        fobj = open(OUTPUTDIR + "GLTransactions" + str(x) + ".xml", "w")        
         fobj.write("<eExact>\n")
         fobj.write(etree.tostring(xml, pretty_print=True))
         fobj.write("</eExact>")
@@ -326,6 +335,7 @@ def ConfigSectionMap(section):
             dict1[option] = None
     return dict1
 
+
 #
 # MAIN SECTION
 # Zuerst die Konfiguration dann der aufruf der einzelnen Programme
@@ -334,42 +344,82 @@ def ConfigSectionMap(section):
 CONFIGFILE = "./config.ini"
 
 if not os.path.exists(CONFIGFILE):
-    cfgfile = open("./config.ini","w")
+    cfgfile = open("./config.ini", "w")
     Config = ConfigParser()
 
+    Config.add_section('GENERAL')
+    Config.set('GENERAL', 'SPLIT_BOOKINGS_INTO', '1000')
+
     Config.add_section('DIRS')
-    Config.set('DIRS','INPUTDIR','./INPUT/')
-    Config.set('DIRS','OUTPUTDIR','./OUTPUT/')
+    Config.set('DIRS', 'INPUTDIR', './INPUT/')
+    Config.set('DIRS', 'OUTPUTDIR', './OUTPUT/')
+    Config.set('DIRS', 'OUTPUTDIR_BACKUP', './OUTPUT_BACKUP/')
 
     Config.add_section('ACCOUNTS')
-    Config.set('ACCOUNTS','CASH','1000,1001,1002,1003')
-    Config.set('ACCOUNTS','BANK','1200,1201,1202,1203')
-    Config.set('ACCOUNTS','INTERIM','1360')
-    Config.set('ACCOUNTS','DEBTORS','12000')
-    Config.set('ACCOUNTS','SALESJOURNAL','1300')
+    Config.set('ACCOUNTS', 'CASH', '1000,1001,1002,1003')
+    Config.set('ACCOUNTS', 'BANK', '1200,1201,1202,1203')
+    Config.set('ACCOUNTS', 'INTERIM', '1360')
+    Config.set('ACCOUNTS', 'DEBTORS', '12000')
+    Config.set('ACCOUNTS', 'SALESJOURNAL', '1300')
+
+    Config.add_section('VATIDS')
+    Config.set('VATIDS', 'VAT_LOW', '1,6')
+    Config.set('VATIDS', 'VAT_HIGH', '2,21')
+    Config.set('VATIDS', 'VAT_ZERO', '0,0')
+    Config.set('VATIDS', 'VAT_INEU', '7,0')
+    Config.set('VATIDS', 'VAT_OUTEU', '6,0')
 
     Config.add_section('COUNTERS')
-    Config.set('COUNTERS','BOOKINGID','1')
-
+    Config.set('COUNTERS', 'BOOKINGID', '1')
 
     Config.write(cfgfile)
     cfgfile.close()
 
+maxBookingsPerFile = int(ConfigSectionMap("GENERAL")['split_bookings_into'])
+
 INPUTDIR = ConfigSectionMap("DIRS")['inputdir']
 OUTPUTDIR = ConfigSectionMap("DIRS")['outputdir']
+OUTPUTDIR_BACKUP = ConfigSectionMap("DIRS")['outputdir_backup']
+
+CASH_ACCOUNTS = ConfigSectionMap("ACCOUNTS")['cash'].split(',')
+BANK_ACCOUNTS = ConfigSectionMap("ACCOUNTS")['bank'].split(',')
+INTERIM_ACCOUNT = ConfigSectionMap("ACCOUNTS")['interim']
+DEBTORS_ACCOUNTS = int(ConfigSectionMap("ACCOUNTS")['debtors'])
+SALESJOURNAL = ConfigSectionMap("ACCOUNTS")['salesjournal']
+
+ACCOUNTS = CASH_ACCOUNTS + BANK_ACCOUNTS
+
+VAT_LOW = ConfigSectionMap("VATIDS")['vat_low'].split(',')
+VAT_HIGH = ConfigSectionMap("VATIDS")['vat_high'].split(',')
+VAT_ZERO = ConfigSectionMap("VATIDS")['vat_zero'].split(',')
+VAT_INEU = ConfigSectionMap("VATIDS")['vat_ineu'].split(',')
+VAT_OUTEU = ConfigSectionMap("VATIDS")['vat_outeu'].split(',')
+
+ALL_VAT_CODES = (VAT_LOW, VAT_HIGH, VAT_ZERO, VAT_INEU, VAT_OUTEU)
+
+
+BOOKINGID = int(ConfigSectionMap("COUNTERS")['bookingid'])
+
+# Zuerst alle alten Daten im OUTPUT Verzeichniss loeschen
+filelist = [ f for f in os.listdir(OUTPUTDIR)]
+for f in filelist:
+    os.remove(OUTPUTDIR+f)
+
+timestamp = time.strftime("%Y_%m_%d_%H_%M_%S")
 
 ensure_dir(INPUTDIR)
 ensure_dir(OUTPUTDIR)
+ensure_dir(OUTPUTDIR_BACKUP)
 
 makeXMLTransactions()
 makeXMLAccounts()
 
-# TODO: Configfile
-# TODO: Export für mehrere firmen
+filelist = [ f for f in os.listdir(OUTPUTDIR)]
+for f in filelist:
+    shutil.copy(OUTPUTDIR+f,OUTPUTDIR_BACKUP+timestamp+"_"+f[:-4]+".xml")
+
+# TODO: Export fuer mehrere firmen
 # TODO: Geht die Booking ID Alphanumerisch
 # TODO: User Interface
 # TODO: Booking Counter korrekt setzten
-# TODO: Backup von Export Daten mit Timestamp
-# TODO: Steuersaetze ausland und andere abweichende steuersaetze
-# TODO: Backup von Export Daten mit Timestamp
 # TODO: ACCOUNTS TO CREATE SORTIEREN
