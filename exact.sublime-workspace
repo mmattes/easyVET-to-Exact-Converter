@@ -1,0 +1,1027 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"boo",
+				"booking	forflow"
+			],
+			[
+				"is",
+				"isDebitBooking	function"
+			],
+			[
+				"Jou",
+				"getJournalCode"
+			],
+			[
+				"booki",
+				"Booking	class"
+			],
+			[
+				"getJournal",
+				"getJournalCode	function"
+			],
+			[
+				"Bo",
+				"Booking	param"
+			],
+			[
+				"get",
+				"getISODate	function"
+			],
+			[
+				"debit",
+				"debitaccount"
+			],
+			[
+				"Boo",
+				"Bookings	statement"
+			],
+			[
+				"read",
+				"readline	function"
+			],
+			[
+				"credit",
+				"creditaccount"
+			],
+			[
+				"GL",
+				"GLTransactions	statement"
+			],
+			[
+				"jour",
+				"journalaccount	statement"
+			],
+			[
+				"GLt",
+				"GLTransactionLines	statement"
+			],
+			[
+				"book",
+				"Booking	class"
+			],
+			[
+				"cred",
+				"creditaccount"
+			],
+			[
+				"acc",
+				"accountcredit	statement"
+			],
+			[
+				"account",
+				"accountdebit	statement"
+			],
+			[
+				"gl",
+				"GLTransactions"
+			],
+			[
+				"GLTras",
+				"GLTransaction"
+			],
+			[
+				"w",
+				"write	function"
+			],
+			[
+				"Acc",
+				"Accounts	statement"
+			],
+			[
+				"A",
+				"Account	struct ʈ"
+			],
+			[
+				"Pri",
+				"Printf	n int, err error ƒ"
+			],
+			[
+				"Mar",
+				"MarshalIndent	[]byte, error ƒ"
+			],
+			[
+				"En",
+				"NewEncoder	*xml.Encoder ƒ"
+			],
+			[
+				"Listen",
+				"ListenAndServe	error ƒ"
+			],
+			[
+				"liste",
+				"ListenAndServe	error ƒ"
+			],
+			[
+				"U",
+				"URL	*url.URL ν"
+			],
+			[
+				"listen",
+				"ListenAndServeTLS	error ƒ"
+			],
+			[
+				"T",
+				"Tree	*parse.Tree ν"
+			],
+			[
+				"p",
+				"Printf	n int, err error ƒ"
+			],
+			[
+				"t",
+				"Tree	*parse.Tree ν"
+			],
+			[
+				"Temp",
+				"templates	*template.Template ν"
+			],
+			[
+				"Std",
+				"Stdout	*os.File ν"
+			],
+			[
+				"respo",
+				"ResponseWriter	interface ¡"
+			],
+			[
+				"re",
+				"Request	struct ʈ"
+			],
+			[
+				"func",
+				"func	Function"
+			],
+			[
+				"ex",
+				"ExecuteTemplate	error ƒ"
+			],
+			[
+				"Stat",
+				"StatusFound	 Ɩ"
+			],
+			[
+				"Form",
+				"FormValue	string ƒ"
+			],
+			[
+				"Respon",
+				"ResponseWriter	interface ¡"
+			],
+			[
+				"fun",
+				"func	func {...} ʂ"
+			],
+			[
+				"Handle",
+				"HandleFunc	 ƒ"
+			],
+			[
+				"P",
+				"Path	string ν"
+			],
+			[
+				"Fp",
+				"Fprintf	n int, err error ƒ"
+			],
+			[
+				"Prt",
+				"Println	n int, err error ƒ"
+			],
+			[
+				"Rea",
+				"ReadFile	[]byte, error ƒ"
+			],
+			[
+				"imp",
+				"import	import (...) ʂ"
+			],
+			[
+				"fil",
+				"fileArray"
+			],
+			[
+				"req",
+				"require"
+			],
+			[
+				"Moo",
+				"Mood"
+			],
+			[
+				"fo",
+				"footprintSchema"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "Templates/GLTransactions_1_orig.xml",
+			"settings":
+			{
+				"buffer_size": 1196,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "accounts.py",
+			"settings":
+			{
+				"buffer_size": 1156,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "bookings.py",
+			"settings":
+			{
+				"buffer_size": 5241,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "BuchungF1_orig.txt",
+			"settings":
+			{
+				"buffer_size": 405325,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "BuchungF1.txt",
+			"settings":
+			{
+				"buffer_size": 724,
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "Packages/Python/Python.sublime-build",
+	"command_palette":
+	{
+		"height": 201.0,
+		"selected_items":
+		[
+			[
+				"todo",
+				"TodoReview: Project Files"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"add",
+				"Project: Add Folder"
+			],
+			[
+				"folder",
+				"Project: Add Folder"
+			],
+			[
+				"html",
+				"Set Syntax: HTML"
+			],
+			[
+				"go",
+				"Set Syntax: GoSublime: Go"
+			],
+			[
+				"app",
+				"Set Syntax: AppleScript"
+			],
+			[
+				"usage",
+				"GoSublime: Usage & Tips"
+			],
+			[
+				"gol",
+				"GoSublime: Open Error Log"
+			],
+			[
+				"pro",
+				"Project: Add Folder"
+			],
+			[
+				"GoSublime: ",
+				"GoSublime: Run build command"
+			],
+			[
+				"java",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"",
+				"Project: Add Folder"
+			]
+		],
+		"width": 449.0
+	},
+	"console":
+	{
+		"height": 126.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/home/markus/.config/sublime-text-3/Packages/GoSublime/USAGE.md",
+		"/home/markus/.config/sublime-text-3/Packages/GoSublime/CHANGELOG.md",
+		"/home/markus/bookhouding_nl/GLTransactions.xml",
+		"/home/markus/bookhouding_nl/Templates/GLTransactions_1.xml",
+		"/home/markus/bookhouding_nl/BuchungF1_orig.txt",
+		"/home/markus/bookhouding_nl/Relaties.xml",
+		"/home/markus/bookhouding_nl/Templates/Accounts_1.xml",
+		"/home/markus/bookhouding_nl/accounts.py",
+		"/home/markus/bookhouding_nl/bookings.py",
+		"/home/markus/bookhouding_nl/Templates/Klanten.xml",
+		"/home/markus/.config/sublime-text-3/Packages/User/Preferences.sublime-settings",
+		"/home/markus/bookhouding_nl/accounts.xml",
+		"/home/markus/bookhouding_nl/accounts.go",
+		"/home/markus/goprojects/gowiki/server.go",
+		"/home/markus/goprojects/gowiki/tmpl/list.html",
+		"/home/markus/goprojects/gowiki/tmpl/navbar.html",
+		"/home/markus/goprojects/gowiki/wiki.go",
+		"/home/markus/goprojects/gowiki/url_test.go",
+		"/home/markus/goprojects/gowiki/tmpl/login.html",
+		"/home/markus/goprojects/gowiki/tmpl/header.html",
+		"/home/markus/goprojects/gowiki/source/Font-Awesome/.gitignore",
+		"/home/markus/goprojects/gowiki/tmpl/create.html",
+		"/home/markus/goprojects/gowiki/tmpl/edit.html",
+		"/home/markus/goprojects/gowiki/tmpl/scripts.html",
+		"/home/markus/Downloads/Download",
+		"/home/markus/goprojects/gowiki/wiki",
+		"/home/markus/goprojects/gowiki/source/bootstrap/test-infra/S3Cachefile.json",
+		"/home/markus/goprojects/gowiki/source/bootstrap/LICENSE",
+		"/home/markus/goprojects/gowiki/tmpl/_base.html",
+		"/home/markus/goprojects/gowiki/tmpl/_form.html",
+		"/home/markus/nodeprojects/moods-client/public/app/controllers/MoodsListController.js",
+		"/home/markus/nodeprojects/moods-client/public/app/templates/moods/list.html",
+		"/home/markus/goprojects/gowiki/source/Font-Awesome/src/_includes/examples/list.html",
+		"/home/markus/goprojects/gowiki/source/bootstrap/less/mixins/list-group.less",
+		"/home/markus/nodeprojects/moods-client/public/lib/bootstrap/less/list-group.less",
+		"/home/markus/goprojects/gowiki/source/Font-Awesome/scss/_list.scss",
+		"/home/markus/goprojects/gowiki/source/bootstrap/docs/_includes/components/list-group.html",
+		"/home/markus/nodeprojects/moods-client/public/lib/bootstrap/less/mixins/list-group.less",
+		"/home/markus/nodeprojects/moods-client/public/app/templates/moods/_form.html",
+		"/home/markus/nodeprojects/moods-client/public/lib/jquery/src/core/init.js",
+		"/home/markus/goprojects/gowiki/source/bootstrap/less/mixins/nav-vertical-align.less",
+		"/home/markus/nodeprojects/moods-client/server.js",
+		"/home/markus/goprojects/gowiki/resources/index.css",
+		"/home/markus/goprojects/gowiki/test.go",
+		"/home/markus/goprojects/gowiki/index.html",
+		"/home/markus/nodeprojects/moods-client/public/index.html",
+		"/home/markus/goprojects/gowiki/server",
+		"/home/markus/goprojects/gowiki/public/index.html",
+		"/home/markus/goprojects/golang-webapp-tutorial/src/github.com/jakecoffman/golang-webapp-tutorial/tutorial_1/main.go",
+		"/home/markus/goprojects/gowiki/source/bootstrap/docs/_includes/getting-started/whats-included.html",
+		"/home/markus/goprojects/gowiki/source/bootstrap/less/mixins/opacity.less",
+		"/home/markus/goprojects/gowiki/source/Font-Awesome/Gemfile",
+		"/home/markus/nodeprojects/moods-client/public/app/templates/moods/create.html",
+		"/home/markus/goprojects/golang-webapp-tutorial/src/github.com/jakecoffman/golang-webapp-tutorial/tutorial_2/README.md",
+		"/home/markus/goprojects/gowiki/source/bootstrap/docs/_includes/getting-started/disabling-responsiveness.html",
+		"/home/markus/goprojects/gowiki/source/bootstrap/less/wells.less",
+		"/home/markus/goprojects/gowiki/tmpl/view.html",
+		"/home/markus/goprojects/gowiki/data/FrontPage.txt",
+		"/home/markus/goprojects/gowiki/source/bootstrap/less/forms.less",
+		"/home/markus/goprojects/gowiki/source/bootstrap/grunt/bs-commonjs-generator.js",
+		"/home/markus/nodeprojects/moods/package.json",
+		"/home/markus/nodeprojects/moods/models/mood.js",
+		"/home/markus/nodeprojects/moods/routes/moods.js",
+		"/home/markus/.config/sublime-text-3/Packages/User/GoSublime/linux-x32/log.txt",
+		"/opt/sublime_text_3/Packages/Go.sublime-package",
+		"/tmp/gowiki/edit.html",
+		"/tmp/gowiki/view.html",
+		"/tmp/gowiki/wiki.go",
+		"/tmp/gowiki/server.go",
+		"/tmp/hello.go",
+		"/home/markus/nodeprojects/learnyounode/program.js",
+		"/tmp/test",
+		"/home/markus/nodeprojects/moods/controllers/moodsController.js",
+		"/home/markus/nodeprojects/moods/app.js",
+		"/home/markus/nodeprojects/moods/node_modules/mongoose/contRun.sh",
+		"/home/markus/nodeprojects/moods/node_modules/cors/CONTRIBUTING.md",
+		"/home/markus/nodeprojects/homeoffice/routes/users.js",
+		"/home/markus/nodeprojects/homeoffice/package.json",
+		"/home/markus/nodeprojects/homeoffice/app.js",
+		"/home/markus/nodeprojects/moods-client/public/app/controllers/MoodsDeleteController.js",
+		"/home/markus/nodeprojects/moods-client/public/app/controllers/MoodsEditController.js",
+		"/home/markus/nodeprojects/moods-client/public/app/templates/moods/edit.html",
+		"/home/markus/nodeprojects/moods-client/public/app/app.js",
+		"/home/markus/nodeprojects/moods/node_modules/body-parser/LICENSE",
+		"/home/markus/nodeprojects/moods/node_modules/body-parser/HISTORY.md",
+		"/home/markus/nodeprojects/moods-client/public/lib/bootstrap/less/mixins/hide-text.less",
+		"/home/markus/nodeprojects/moods-client/public/lib/jquery/src/core/parseHTML.js",
+		"/home/markus/nodeprojects/moods-client/public/app/controllers/MoodsCreateController.js",
+		"/home/markus/nodeprojects/moods/node_modules/mongoose/lib/error/messages.js",
+		"/home/markus/nodeprojects/moods/node_modules/debug/debug.js",
+		"/home/markus/nodeprojects/moods/node_modules/mongoose/node_modules/mongodb/lib/mongodb/commands/delete_command.js",
+		"/home/markus/nodeprojects/moods-client/public/lib/jquery/src/queue/delay.js",
+		"/home/markus/nodeprojects/moods-client/public/lib/bootstrap/less/component-animations.less",
+		"/home/markus/nodeprojects/moods-client/public/lib/jquery/src/css/addGetHookIf.js",
+		"/home/markus/nodeprojects/moods/node_modules/body-parser/node_modules/iconv-lite/Changelog.md",
+		"/home/markus/nodeprojects/moods/node_modules/cookie-parser/HISTORY.md",
+		"/home/markus/nodeprojects/moods/node_modules/debug/node.js",
+		"/home/markus/nodeprojects/moods/node_modules/express/node_modules/accepts/node_modules/negotiator/lib/negotiator.js",
+		"/home/markus/nodeprojects/moods/node_modules/mongoose/node_modules/mongodb/node_modules/bson/lib/bson/bson_new.js",
+		"/home/markus/nodeprojects/moods/node_modules/mongoose/examples/population/population-of-existing-doc.js",
+		"/home/markus/nodeprojects/moods/node_modules/express/lib/express.js",
+		"/home/markus/nodeprojects/moods-client/public/app/controllers/MoodsDeleteController",
+		"/home/markus/nodeprojects/moods/node_modules/express/node_modules/etag/node_modules/crc/lib/create.js",
+		"/home/markus/nodeprojects/moods-client/node_modules/express/node_modules/etag/node_modules/crc/lib/create.js",
+		"/home/markus/nodeprojects/moods/node_modules/mongoose/node_modules/mpromise/.idea/libraries/Node_js_Dependencies_for_mpromise.xml",
+		"/home/markus/nodeprojects/moods-client/public/lib/jquery/src/css/curCSS.js",
+		"/home/markus/nodeprojects/moods-client/public/app/controller/MoodsListController.js",
+		"/home/markus/nodeprojects/moods/node_modules/mongoose/lib/model.js",
+		"/home/markus/nodeprojects/moods-client/public/lib/jquery/src/var/hasOwn.js",
+		"/home/markus/nodeprojects/moods/node_modules/mongoose/node_modules/hooks/Makefile",
+		"/home/markus/nodeprojects/moods-client/public/lib/angular/angular.js",
+		"/home/markus/nodeprojects/moods-client/public/css/style.css",
+		"/home/markus/nodeprojects/moods-client/.bowerrc",
+		"/home/markus/nodeprojects/moods/node_modules/mongoose/node_modules/mongodb/lib/mongodb/admin.js",
+		"/home/markus/nodeprojects/moods/node_modules/body-parser/node_modules/iconv-lite/encodings/tables/big5-added.json",
+		"/home/markus/nodeprojects/moods/node_modules/body-parser/lib/types/json.js",
+		"/home/markus/nodeprojects/moods/node_modules/mongoose/node_modules/mongodb/node_modules/bson/tools/jasmine-1.1.0/jasmine.css",
+		"/home/markus/nodeprojects/moods/bin/www",
+		"/home/markus/nodeprojects/moods/routes/users.js",
+		"/home/markus/nodeprojects/moods/routes/index.js",
+		"/home/markus/nodeprojects/moods/npm-debug.log",
+		"/home/markus/nodeprojects/moods/moods/package.json",
+		"/home/markus/nodeprojects/moods/moods/app.js",
+		"/home/markus/nodeprojects/moods/moods/routes/users.js",
+		"/home/markus/nodeprojects/moods/moods/routes/index.js",
+		"/home/markus/nodeprojects/moods/moods/bin/www",
+		"/home/markus/nodeprojects/footprint/node_modules/debug/component.json",
+		"/home/markus/nodeprojects/footprint/node_modules/body-parser/README.md"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 93.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"Amount",
+			"01",
+			"debitaccount",
+			"creditaccount",
+			"accountdebit",
+			"debitaccount",
+			"accountdebit",
+			"accountcredit",
+			"name",
+			"Name",
+			"Default",
+			"Mustermann, Max",
+			"Mustermann",
+			"'",
+			" '",
+			"Fax",
+			"AddressLine3",
+			"Email",
+			"Phone",
+			"Name",
+			"Fax",
+			"Email",
+			"ng-model",
+			"placeholders",
+			"fav"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"`",
+			"placeholder"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 2,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "Templates/GLTransactions_1_orig.xml",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1196,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								759,
+								759
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/XML/XML.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "accounts.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1156,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								343,
+								343
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 167.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "bookings.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5241,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1655,
+								1655
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 754.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "BuchungF1_orig.txt",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 405325,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								8208,
+								8208
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 2463.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "BuchungF1.txt",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 724,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.9o:///home/markus/.config/sublime-text-3/Packages/GoSublime":
+	{
+		"height": 100.0
+	},
+	"output.9o:///home/markus/bookhouding_nl":
+	{
+		"height": 185.0
+	},
+	"output.9o:///home/markus/goprojects/gowiki":
+	{
+		"height": 219.0
+	},
+	"output.9o:///opt/sublime_text_3":
+	{
+		"height": 100.0
+	},
+	"output.9o:///tmp":
+	{
+		"height": 100.0
+	},
+	"output.9o:///tmp/gowiki":
+	{
+		"height": 245.0
+	},
+	"output.GoSublime-main-output":
+	{
+		"height": 100.0
+	},
+	"output.MarGo-output":
+	{
+		"height": 100.0
+	},
+	"output.exec":
+	{
+		"height": 370.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"project": "exact.sublime-project",
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"wiki",
+				"wiki.go"
+			],
+			[
+				".html",
+				"tmpl/navbar.html"
+			],
+			[
+				"list",
+				"tmpl/list.html"
+			],
+			[
+				"header",
+				"tmpl/header.html"
+			],
+			[
+				"scrip",
+				"tmpl/scripts.html"
+			],
+			[
+				"_base",
+				"gowiki/tmpl/_base.html"
+			],
+			[
+				"head",
+				"gowiki/tmpl/header.html"
+			],
+			[
+				"script",
+				"gowiki/tmpl/scripts.html"
+			],
+			[
+				"nav",
+				"gowiki/tmpl/navbar.html"
+			],
+			[
+				"inde",
+				"gowiki/tmpl/index.html"
+			],
+			[
+				"gowiki",
+				"gowiki/wiki.go"
+			],
+			[
+				"inder",
+				"gowiki/source/bootstrap/docs/_includes/getting-started/disabling-responsiveness.html"
+			],
+			[
+				"create",
+				"moods-client/public/app/templates/moods/create.html"
+			],
+			[
+				"_fomr",
+				"moods-client/public/app/templates/moods/_form.html"
+			],
+			[
+				"_form",
+				"tmpl/_form.html"
+			],
+			[
+				"edit",
+				"tmpl/edit.html"
+			],
+			[
+				"wik",
+				"wiki.go"
+			],
+			[
+				"",
+				"/tmp/gowiki/server.go"
+			],
+			[
+				"app",
+				"app.js"
+			],
+			[
+				"moo",
+				"routes/moods.js"
+			],
+			[
+				"moodscon",
+				"controllers/moodsController.js"
+			],
+			[
+				"controller",
+				"controllers/moodsController.js"
+			],
+			[
+				"in",
+				"moods-client/public/index.html"
+			],
+			[
+				"moods",
+				"moods-client/public/app/controllers/MoodsEditController.js"
+			],
+			[
+				"listcon",
+				"moods-client/public/app/controllers/MoodsListController.js"
+			],
+			[
+				"lis",
+				"moods-client/public/app/templates/moods/list.html"
+			],
+			[
+				"delete",
+				"moods-client/public/app/controllers/MoodsDeleteController.js"
+			],
+			[
+				"ed",
+				"moods-client/public/app/templates/moods/edit.html"
+			],
+			[
+				"deletecon",
+				"moods-client/public/app/controllers/MoodsDeleteController.js"
+			],
+			[
+				"editcon",
+				"moods-client/public/app/controllers/MoodsEditController.js"
+			],
+			[
+				"crea",
+				"moods-client/public/app/templates/moods/create.html"
+			],
+			[
+				"edi",
+				"moods-client/public/app/templates/moods/edit.html"
+			],
+			[
+				"index",
+				"moods-client/public/index.html"
+			],
+			[
+				"moodese",
+				"moods-client/public/app/controllers/MoodsEditController.js"
+			],
+			[
+				"creater",
+				"moods-client/public/app/controllers/MoodsCreateController.js"
+			],
+			[
+				"indexd",
+				"moods/node_modules/mongoose/node_modules/mpromise/.idea/libraries/Node_js_Dependencies_for_mpromise.xml"
+			],
+			[
+				"moodslist",
+				"moods-client/public/app/controllers/MoodsListController.js"
+			],
+			[
+				"contro",
+				"moods/controllers/moodsController.js"
+			],
+			[
+				"app.js",
+				"moods/app.js"
+			],
+			[
+				"mood",
+				"moods/models/mood.js"
+			],
+			[
+				"pack",
+				"package.json"
+			],
+			[
+				"user",
+				"routes/users.js"
+			],
+			[
+				"p",
+				"package.json"
+			],
+			[
+				"ww",
+				"bin/www"
+			],
+			[
+				"pac",
+				"package.json"
+			],
+			[
+				"pa",
+				"moods/package.json"
+			],
+			[
+				"npm",
+				"npm-debug.log"
+			],
+			[
+				"users",
+				"moods/routes/users.js"
+			],
+			[
+				"foot",
+				"routes/footprint.js"
+			],
+			[
+				"controll",
+				"controllers/footprintController.js"
+			],
+			[
+				"oot",
+				"routes/footprint.js"
+			],
+			[
+				"bin/",
+				"bin/www"
+			],
+			[
+				"foo",
+				"routes/footprint.js"
+			],
+			[
+				"f",
+				"routes/footprint.js"
+			],
+			[
+				"fo",
+				"routes/footprint.js"
+			],
+			[
+				"model",
+				"models/footprint.js"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 247.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
