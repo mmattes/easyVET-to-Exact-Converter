@@ -452,4 +452,5 @@ raw_input("Press any key to close the converter")
 # TODO: Export fuer mehrere firmen
 # TODO: User Interface
 # TODO: XML API: https://developers.exactonline.com/#XMLIntro.html
+# TODO: Per API pruefen ob alle Konten angelegt 
 # TODO: ACCOUNTS TO CREATE SORTIEREN

@@ -3,8 +3,10 @@ import urllib2
 import time
 
 baseurl = "https://start.exactonline.nl"
+# Eindeutige Application ID von exact, regestriert mit info@vetz.de und pw d30625VetZ
 application_id = "a90e5d42-6e86-439b-aff2-9a4bad63596b"
 
+# Mandat des Test Accounts
 division = "750740"
 
 raw_params = {'_UserName_':'mm@trash-mail.com','_Password_':'ES1ma87e!'}
@@ -36,7 +38,7 @@ time.sleep(5)
 url = baseurl+"/docs/XMLUpload.aspx?Topic=GLTransactions&ApplicationKey="+application_id;
 
 #myfile = open("./OUTPUT/Relaties.xml","r")
-myfile = open("./OUTPUT/GLTransactions3.xml","r")
+myfile = open("./OUTPUT/GLTransactions4.xml","r")
 data = myfile.read()
 print data
 
