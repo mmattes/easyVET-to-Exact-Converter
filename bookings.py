@@ -76,7 +76,7 @@ class Booking(object):
 
     def getVATCode(self, vatcode):
         if vatcode == "":
-            return VAT_ZERO[0]
+            return ""
         elif vatcode == "1":
             return VAT_LOW[0]
         elif vatcode == "2":
@@ -135,13 +135,13 @@ class Booking(object):
         if not self.debitaccount == SALESJOURNAL:
             return self.vatcode
         else:
-            return VAT_ZERO[0]
+            return ""
 
     def getCreditVatCode(self):
         if not self.creditaccount == SALESJOURNAL:
             return self.vatcode
         else:
-            return VAT_ZERO[0]
+            return ""
 
     def getJournalCode(self):
         for account in ACCOUNTS:
@@ -170,23 +170,26 @@ class Booking(object):
             return "20"
 
     def getAmountExVat(self):
-        for VATCODE in ALL_VAT_CODES:
-            if self.vatcode == VATCODE[0]:
-                return str(float(self.amount) / (100 + int(VATCODE[1])) * 100)
-                break
-
-#        if self.vatcode == "":
-#            return self.amount
-#        elif int(self.vatcode) == 1:
-#            return str(float(self.amount) / 106 * 100)
-#        elif int(self.vatcode) == 2:
-#            return str(float(self.amount) / 121 * 100)
-#        else:
-#            return self.amount
+        if not self.vatcode == "":            
+            for VATCODE in ALL_VAT_CODES:
+                if self.vatcode == VATCODE[0]:                    
+                    return str(float(self.amount) / (100 + int(VATCODE[1])) * 100)
+                    break
+        else:
+            return self.amount
+        
 
     def getISODate(self):
         return datetime.date(int(self.date[6:]), int(self.date[3:-5]), int(self.date[:-8])).isoformat()
 
+
+#
+# Dient zum loeschen des screens
+##########################################################################
+
+def cls():        
+    os.system('cls' if os.name == 'nt' else 'clear')
+    return ''
 
 #
 # Generiert aus den buchungen die eigentlichen Exact Konformen
@@ -413,16 +416,20 @@ ensure_dir(INPUTDIR)
 ensure_dir(OUTPUTDIR)
 ensure_dir(OUTPUTDIR_BACKUP)
 
+cls()
 print "# BOOKKEEPING CONVERTER V1.0"
 print "# converts .txt files from easyVET to .xml files for exact"
 print '##########################################################################\n'
 print "Please place the BuchungF1.txt and DebitorF1.txt export file from easyVET in the "+INPUTDIR+" Folder and press any key to continue"
 raw_input()
-print "Files will be converted...."
+
+cls()
+
+print "Files will be converted....\n\n"
 makeXMLAccounts()
 newbookingid = makeXMLTransactions()
-print "Conversion finished!"
-print "WARNING! Files to import have been created in the "+OUTPUTDIR+" Folder. Please make sure that all accounts which are listed in the file AccountsToCreate.txt are created up front in exact"
+print "\n\nConversion finished!\n\n"
+print "WARNING! Files to import have been created in the "+OUTPUTDIR+" Folder. Please make sure that all accounts which are listed in the file AccountsToCreate.txt are created UP FRONT in exact\n\n"
 i = str(raw_input("Please import files now to EXACT. Was the import sucessfull confirm it with y otherwise enter n "))
 
 if i == "y":
@@ -433,6 +440,8 @@ if i == "y":
     Config.write(cfgfile)
     cfgfile.close()
 
+    cls()
+
     print "Export and Import was sucessfull files will be now backuped to "+OUTPUTDIR_BACKUP+" folder"
     filelist = [ f for f in os.listdir(OUTPUTDIR)]
     for f in filelist:
@@ -442,4 +451,5 @@ raw_input("Press any key to close the converter")
 
 # TODO: Export fuer mehrere firmen
 # TODO: User Interface
+# TODO: XML API: https://developers.exactonline.com/#XMLIntro.html
 # TODO: ACCOUNTS TO CREATE SORTIEREN
