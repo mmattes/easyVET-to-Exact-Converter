@@ -405,19 +405,19 @@ ALL_VAT_CODES = (VAT_LOW, VAT_HIGH, VAT_ZERO, VAT_INEU, VAT_OUTEU)
 
 BOOKINGID = int(ConfigSectionMap("COUNTERS")['bookingid'])
 
-# Zuerst alle alten Daten im OUTPUT Verzeichniss loeschen
-filelist = [ f for f in os.listdir(OUTPUTDIR)]
-for f in filelist:
-    os.remove(OUTPUTDIR+f)
-
 timestamp = time.strftime("%Y_%m_%d_%H_%M_%S")
 
 ensure_dir(INPUTDIR)
 ensure_dir(OUTPUTDIR)
 ensure_dir(OUTPUTDIR_BACKUP)
 
+# Zuerst alle alten Daten im OUTPUT Verzeichniss loeschen
+filelist = [ f for f in os.listdir(OUTPUTDIR)]
+for f in filelist:
+    os.remove(OUTPUTDIR+f)
+
 cls()
-print "# BOOKKEEPING CONVERTER V1.0"
+print "# BOOKKEEPING CONVERTER V1.1"
 print "# converts .txt files from easyVET to .xml files for exact"
 print '##########################################################################\n'
 print "Please place the BuchungF1.txt and DebitorF1.txt export file from easyVET in the "+INPUTDIR+" Folder and press any key to continue"
