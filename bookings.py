@@ -276,10 +276,9 @@ def genAccounts():
     acctocreate.close
 
     result = []
-    for a in Accounts:
-        # print a.name
+    for a in Accounts:        
         result.append(
-            E.Account(E.Name(a.name), code=a.code, searchcode=a.searchcode, status="C"))
+            E.Account(E.Name(a.name), E.IsSupplier("False"), code=a.code, searchcode=a.searchcode, status="C"))
     return result
 
 
@@ -420,7 +419,7 @@ for f in filelist:
     os.remove(OUTPUTDIR+f)
 
 cls()
-print "# BOOKKEEPING CONVERTER V1.1"
+print "# BOOKKEEPING CONVERTER V1.2"
 print "# converts .txt files from easyVET to .xml files for exact"
 print '##########################################################################\n'
 print "Please place the BuchungF1.txt and DebitorF1.txt export file from easyVET in the "+INPUTDIR+" Folder and press any key to continue"
