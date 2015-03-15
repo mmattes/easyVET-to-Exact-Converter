@@ -174,7 +174,7 @@ class Booking(object):
         if not self.vatcode == "":
             for VATCODE in ALL_VAT_CODES:
                 if self.vatcode == VATCODE[0]:
-                    return str(float(self.amount) / (100 + int(VATCODE[1])) * 100)
+                    return str(round(float(self.amount) / (100 + int(VATCODE[1])) * 100), 2)
                     break
         else:
             return self.amount
