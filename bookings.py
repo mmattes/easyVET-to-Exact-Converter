@@ -3,6 +3,7 @@ from lxml import etree
 import datetime
 import time
 import os
+import sys
 from ConfigParser import *
 import shutil
 
@@ -253,7 +254,11 @@ def appendGLTransactionLines(GLTransaction):
 
 
 def genAccounts():
-    fobj = open(INPUTDIR + "DebitorF1.txt", "r")
+    try:
+        fobj = open(INPUTDIR + "DebitorF1.txt", "r")
+    except Exception, e:
+        print e
+        sys.exit(1)
 
     acctocreate = open(OUTPUTDIR + "AccountsToCreate.txt", "w")
     Accounts = []
@@ -298,7 +303,12 @@ def genAccounts():
 def makeXMLTransactions():
     currentBookingID = BOOKINGID
 
-    fobj = open(INPUTDIR + "BuchungF1.txt", "r")
+    try:
+        fobj = open(INPUTDIR + "BuchungF1.txt", "r")
+    except Exception, e:
+        print e
+        sys.exit(1)
+
     fobj.readline()
 
     Bookings = []
@@ -435,8 +445,8 @@ cls()
 print "# BOOKKEEPING CONVERTER V1.2"
 print "# converts .txt files from easyVET to .xml files for exact"
 print '##########################################################################\n'
-print "Please place the BuchungF1.txt and DebitorF1.txt export file from easyVET in the "
-+INPUTDIR+" Folder and press any key to continue"
+print "Please place the BuchungF1.txt and DebitorF1.txt export file from easyVET in the %s " \
+      "Folder and press any key to continue" % INPUTDIR
 raw_input()
 
 cls()
@@ -445,12 +455,12 @@ print "Files will be converted....\n\n"
 makeXMLAccounts()
 newbookingid = makeXMLTransactions()
 print "\n\nConversion finished!\n\n"
-print "WARNING! Files to import have been created in the "+OUTPUTDIR+" Folder. " \
-    "Please make sure that all accounts which are listed in the file AccountsToCreate.txt are " \
-    "created UP FRONT in exact\n\n"
+print "WARNING! Files to import have been created in the %s Folder. Please make sure that all " \
+      "accounts which are listed in the file AccountsToCreate.txt are created UP FRONT in " \
+      "exact\n\n" % OUTPUTDIR
 
-i = str(raw_input("Please import files now to EXACT. Was the import sucessfull confirm it with " \
-    "y otherwise enter n "))
+i = str(raw_input("""Please import files now to EXACT. Was the import sucessfull confirm it with y
+                     otherwise enter n """))
 
 if i == "y":
     Config = ConfigParser()
@@ -462,8 +472,7 @@ if i == "y":
 
     cls()
 
-    print "Export and Import was sucessfull files will be now backuped to "
-    +OUTPUTDIR_BACKUP+" folder"
+    print "Export and Import was sucessfull files will be now backuped to %s folder" % OUTPUTDIR
     filelist = [f for f in os.listdir(OUTPUTDIR)]
     for f in filelist:
         shutil.copy(OUTPUTDIR+f, OUTPUTDIR_BACKUP+timestamp+"_"+f[:-4]+".xml")
