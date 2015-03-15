@@ -40,11 +40,11 @@ class GLTransaction(object):
 
 class GLTransactionLine(object):
 
-    def __init__(self, glaccount, description, relation, ammount, vatcode, transactiontype):
+    def __init__(self, glaccount, description, relation, amount, vatcode, transactiontype):
         self.glaccount = glaccount
         self.description = description
         self.relation = relation
-        self.ammount = ammount
+        self.amount = amount
         self.vatcode = vatcode
         self.transactiontype = transactiontype
 
@@ -240,7 +240,7 @@ def appendGLTransactionLines(GLTransaction):
                           E.GLAccount("", code=line.glaccount),
                           E.Description(line.description.decode('utf-8', 'ignore')),
                           E.Amount(E.Currency("", code="EUR"),
-                          E.Value(line.ammount),
+                          E.Value(line.amount),
                           E.VAT("", code=line.vatcode)), type=line.transactiontype, line="1"))
         else:
             result.append(E.GLTransactionLine(E.Date(a.date),
@@ -248,7 +248,7 @@ def appendGLTransactionLines(GLTransaction):
                           E.Description(line.description.decode('utf-8', 'ignore')),
                           E.Account("", code=line.relation),
                           E.Amount(E.Currency("", code="EUR"),
-                          E.Value(line.ammount),
+                          E.Value(line.amount),
                           E.VAT("", code=line.vatcode)), type=line.transactiontype, line="1"))
     return result
 
