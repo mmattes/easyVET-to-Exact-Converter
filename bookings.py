@@ -183,10 +183,10 @@ class Booking(object):
         return datetime.date(int(self.date[6:]), int(self.date[3:-5]),
                              int(self.date[:-8])).isoformat()
 
-
 #
 # Dient zum loeschen des screens
 ##########################################################################
+
 
 def cls():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -438,15 +438,18 @@ ensure_dir(OUTPUTDIR_BACKUP)
 
 # Zuerst alle alten Daten im OUTPUT Verzeichniss loeschen
 filelist = [f for f in os.listdir(OUTPUTDIR)]
+
 for f in filelist:
     os.remove(OUTPUTDIR+f)
 
 cls()
+
 print "# BOOKKEEPING CONVERTER V0.3"
 print "# converts .txt files from easyVET to .xml files for exact"
 print '##########################################################################\n'
 print "Please place the BuchungF1.txt and DebitorF1.txt export file from easyVET in the %s " \
       "Folder and press any key to continue" % INPUTDIR
+
 raw_input()
 
 cls()
