@@ -231,7 +231,10 @@ def appendGLTransactionLines(GLTransaction):
 
     result = []
     for line in a.GLTransactionLines:
-        result.append(E.GLTransactionLine(E.Date(a.date), E.GLAccount("", code=line.glaccount), E.Description(line.description.decode('utf-8', 'ignore')), E.Account(
+        if line.relation == "":
+            result.append(E.GLTransactionLine(E.Date(a.date), E.GLAccount("", code=line.glaccount), E.Description(line.description.decode('utf-8', 'ignore')) , E.Amount(E.Currency("", code="EUR"), E.Value(line.ammount), E.VAT("", code=line.vatcode)), type=line.transactiontype, line="1"))
+        else: 
+            result.append(E.GLTransactionLine(E.Date(a.date), E.GLAccount("", code=line.glaccount), E.Description(line.description.decode('utf-8', 'ignore')), E.Account(
             "", code=line.relation), E.Amount(E.Currency("", code="EUR"), E.Value(line.ammount), E.VAT("", code=line.vatcode)), type=line.transactiontype, line="1"))
     return result
 
@@ -273,10 +276,9 @@ def genAccounts():
     acctocreate.close
 
     result = []
-    for a in Accounts:
-        # print a.name
+    for a in Accounts:        
         result.append(
-            E.Account(E.Name(a.name), code=a.code, searchcode=a.searchcode, status="C"))
+            E.Account(E.Name(a.name), E.IsSupplier("False"), code=a.code, searchcode=a.searchcode, status="C"))
     return result
 
 
@@ -405,19 +407,19 @@ ALL_VAT_CODES = (VAT_LOW, VAT_HIGH, VAT_ZERO, VAT_INEU, VAT_OUTEU)
 
 BOOKINGID = int(ConfigSectionMap("COUNTERS")['bookingid'])
 
-# Zuerst alle alten Daten im OUTPUT Verzeichniss loeschen
-filelist = [ f for f in os.listdir(OUTPUTDIR)]
-for f in filelist:
-    os.remove(OUTPUTDIR+f)
-
 timestamp = time.strftime("%Y_%m_%d_%H_%M_%S")
 
 ensure_dir(INPUTDIR)
 ensure_dir(OUTPUTDIR)
 ensure_dir(OUTPUTDIR_BACKUP)
 
+# Zuerst alle alten Daten im OUTPUT Verzeichniss loeschen
+filelist = [ f for f in os.listdir(OUTPUTDIR)]
+for f in filelist:
+    os.remove(OUTPUTDIR+f)
+
 cls()
-print "# BOOKKEEPING CONVERTER V1.0"
+print "# BOOKKEEPING CONVERTER V1.2"
 print "# converts .txt files from easyVET to .xml files for exact"
 print '##########################################################################\n'
 print "Please place the BuchungF1.txt and DebitorF1.txt export file from easyVET in the "+INPUTDIR+" Folder and press any key to continue"
