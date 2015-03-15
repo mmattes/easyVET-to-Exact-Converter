@@ -3,7 +3,6 @@ from lxml import etree
 import datetime
 import time
 import os
-import sys
 from ConfigParser import *
 import shutil
 
@@ -56,7 +55,8 @@ class GLTransactionLine(object):
 ##########################################################################
 class Booking(object):
 
-    def __init__(self, amount, currency, vatcode, creditaccount, description, date, debitaccount, remark):
+    def __init__(self, amount, currency, vatcode, creditaccount, description, date, debitaccount,
+                 remark):
         self.amount = amount.replace(".", "").replace(",", ".")
         self.vatcode = self.getVATCode(vatcode)
         self.currency = currency
@@ -170,24 +170,24 @@ class Booking(object):
             return "20"
 
     def getAmountExVat(self):
-        if not self.vatcode == "":            
+        if not self.vatcode == "":
             for VATCODE in ALL_VAT_CODES:
-                if self.vatcode == VATCODE[0]:                    
+                if self.vatcode == VATCODE[0]:
                     return str(float(self.amount) / (100 + int(VATCODE[1])) * 100)
                     break
         else:
             return self.amount
-        
 
     def getISODate(self):
-        return datetime.date(int(self.date[6:]), int(self.date[3:-5]), int(self.date[:-8])).isoformat()
+        return datetime.date(int(self.date[6:]), int(self.date[3:-5]),
+                             int(self.date[:-8])).isoformat()
 
 
 #
 # Dient zum loeschen des screens
 ##########################################################################
 
-def cls():        
+def cls():
     os.system('cls' if os.name == 'nt' else 'clear')
     return ''
 
@@ -206,9 +206,12 @@ def genGLTransactions(Bookings, startID):
         a = GLTransaction(
             str(startID), booking.getJournalCode(), booking.getISODate())
         a.GLTransactionLines.append(GLTransactionLine(booking.debitaccount, booking.description +
-                                                      " " + booking.remark, booking.relation, booking.debitamount, booking.debitvatcode, booking.transactiontype))
+                                    " " + booking.remark, booking.relation, booking.debitamount,
+                                    booking.debitvatcode, booking.transactiontype))
+
         a.GLTransactionLines.append(GLTransactionLine(booking.creditaccount, booking.description +
-                                                      " " + booking.remark, booking.relation, booking.creditamount, booking.creditvatcode, booking.transactiontype))
+                                    " " + booking.remark, booking.relation, booking.creditamount,
+                                    booking.creditvatcode, booking.transactiontype))
 
         GLTransactions.append(a)
         a = ""
@@ -232,10 +235,20 @@ def appendGLTransactionLines(GLTransaction):
     result = []
     for line in a.GLTransactionLines:
         if line.relation == "":
-            result.append(E.GLTransactionLine(E.Date(a.date), E.GLAccount("", code=line.glaccount), E.Description(line.description.decode('utf-8', 'ignore')) , E.Amount(E.Currency("", code="EUR"), E.Value(line.ammount), E.VAT("", code=line.vatcode)), type=line.transactiontype, line="1"))
-        else: 
-            result.append(E.GLTransactionLine(E.Date(a.date), E.GLAccount("", code=line.glaccount), E.Description(line.description.decode('utf-8', 'ignore')), E.Account(
-            "", code=line.relation), E.Amount(E.Currency("", code="EUR"), E.Value(line.ammount), E.VAT("", code=line.vatcode)), type=line.transactiontype, line="1"))
+            result.append(E.GLTransactionLine(E.Date(a.date),
+                          E.GLAccount("", code=line.glaccount),
+                          E.Description(line.description.decode('utf-8', 'ignore')),
+                          E.Amount(E.Currency("", code="EUR"),
+                          E.Value(line.ammount),
+                          E.VAT("", code=line.vatcode)), type=line.transactiontype, line="1"))
+        else:
+            result.append(E.GLTransactionLine(E.Date(a.date),
+                          E.GLAccount("", code=line.glaccount),
+                          E.Description(line.description.decode('utf-8', 'ignore')),
+                          E.Account("", code=line.relation),
+                          E.Amount(E.Currency("", code="EUR"),
+                          E.Value(line.ammount),
+                          E.VAT("", code=line.vatcode)), type=line.transactiontype, line="1"))
     return result
 
 
@@ -267,8 +280,8 @@ def genAccounts():
             searchcode = ""
 
         if code != "" and int(code) >= DEBTORS_ACCOUNTS:
-            Accounts.append(Account(code.decode(
-                "utf-8", "ignore"), name.decode("utf-8", "ignore"), searchcode.decode("utf-8", "ignore")))
+            Accounts.append(Account(code.decode("utf-8", "ignore"), name.decode("utf-8", "ignore"),
+                                    searchcode.decode("utf-8", "ignore")))
         elif code != "" and int(code) < DEBTORS_ACCOUNTS:
             acctocreate.write(line)
 
@@ -276,9 +289,9 @@ def genAccounts():
     acctocreate.close
 
     result = []
-    for a in Accounts:        
-        result.append(
-            E.Account(E.Name(a.name), E.IsSupplier("False"), code=a.code, searchcode=a.searchcode, status="C"))
+    for a in Accounts:
+        result.append(E.Account(E.Name(a.name), E.IsSupplier("False"),
+                      code=a.code, searchcode=a.searchcode, status="C"))
     return result
 
 
@@ -300,15 +313,15 @@ def makeXMLTransactions():
     for x in range(0, files + 1):
         print "Creating Files for Bookings from "+str(x * maxBookingsPerFile)
 
-        xml = E.GLTransactions(
-            *genGLTransactions(Bookings[x * maxBookingsPerFile:(x + 1) * maxBookingsPerFile], currentBookingID))
-        fobj = open(OUTPUTDIR + "GLTransactions" + str(x) + ".xml", "w")        
+        xml = E.GLTransactions(*genGLTransactions(
+            Bookings[x * maxBookingsPerFile:(x + 1) * maxBookingsPerFile], currentBookingID))
+        fobj = open(OUTPUTDIR + "GLTransactions" + str(x) + ".xml", "w")
         fobj.write("<eExact>\n")
         fobj.write(etree.tostring(xml, pretty_print=True))
         fobj.write("</eExact>")
         fobj.close()
         currentBookingID += maxBookingsPerFile
-    
+
     return BOOKINGID + len(Bookings)
 
 
@@ -414,7 +427,7 @@ ensure_dir(OUTPUTDIR)
 ensure_dir(OUTPUTDIR_BACKUP)
 
 # Zuerst alle alten Daten im OUTPUT Verzeichniss loeschen
-filelist = [ f for f in os.listdir(OUTPUTDIR)]
+filelist = [f for f in os.listdir(OUTPUTDIR)]
 for f in filelist:
     os.remove(OUTPUTDIR+f)
 
@@ -422,7 +435,8 @@ cls()
 print "# BOOKKEEPING CONVERTER V1.2"
 print "# converts .txt files from easyVET to .xml files for exact"
 print '##########################################################################\n'
-print "Please place the BuchungF1.txt and DebitorF1.txt export file from easyVET in the "+INPUTDIR+" Folder and press any key to continue"
+print "Please place the BuchungF1.txt and DebitorF1.txt export file from easyVET in the "
++INPUTDIR+" Folder and press any key to continue"
 raw_input()
 
 cls()
@@ -431,8 +445,12 @@ print "Files will be converted....\n\n"
 makeXMLAccounts()
 newbookingid = makeXMLTransactions()
 print "\n\nConversion finished!\n\n"
-print "WARNING! Files to import have been created in the "+OUTPUTDIR+" Folder. Please make sure that all accounts which are listed in the file AccountsToCreate.txt are created UP FRONT in exact\n\n"
-i = str(raw_input("Please import files now to EXACT. Was the import sucessfull confirm it with y otherwise enter n "))
+print "WARNING! Files to import have been created in the "+OUTPUTDIR+" Folder. " \
+    "Please make sure that all accounts which are listed in the file AccountsToCreate.txt are " \
+    "created UP FRONT in exact\n\n"
+
+i = str(raw_input("Please import files now to EXACT. Was the import sucessfull confirm it with " \
+    "y otherwise enter n "))
 
 if i == "y":
     Config = ConfigParser()
@@ -444,15 +462,16 @@ if i == "y":
 
     cls()
 
-    print "Export and Import was sucessfull files will be now backuped to "+OUTPUTDIR_BACKUP+" folder"
-    filelist = [ f for f in os.listdir(OUTPUTDIR)]
+    print "Export and Import was sucessfull files will be now backuped to "
+    +OUTPUTDIR_BACKUP+" folder"
+    filelist = [f for f in os.listdir(OUTPUTDIR)]
     for f in filelist:
-        shutil.copy(OUTPUTDIR+f,OUTPUTDIR_BACKUP+timestamp+"_"+f[:-4]+".xml")
+        shutil.copy(OUTPUTDIR+f, OUTPUTDIR_BACKUP+timestamp+"_"+f[:-4]+".xml")
 
 raw_input("Press any key to close the converter")
 
 # TODO: Export fuer mehrere firmen
 # TODO: User Interface
 # TODO: XML API: https://developers.exactonline.com/#XMLIntro.html
-# TODO: Per API pruefen ob alle Konten angelegt 
+# TODO: Per API pruefen ob alle Konten angelegt
 # TODO: ACCOUNTS TO CREATE SORTIEREN
