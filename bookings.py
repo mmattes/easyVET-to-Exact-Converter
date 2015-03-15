@@ -442,7 +442,7 @@ for f in filelist:
     os.remove(OUTPUTDIR+f)
 
 cls()
-print "# BOOKKEEPING CONVERTER V1.2"
+print "# BOOKKEEPING CONVERTER V0.3"
 print "# converts .txt files from easyVET to .xml files for exact"
 print '##########################################################################\n'
 print "Please place the BuchungF1.txt and DebitorF1.txt export file from easyVET in the %s " \
