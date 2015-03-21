@@ -151,9 +151,9 @@ class Booking(object):
                 break
 
         if self.debitaccount == INTERIM_ACCOUNT or self.creditaccount == INTERIM_ACCOUNT:
-            return "90"
+            return INTERIMJOURNAL_CODE
         elif self.debitaccount == SALESJOURNAL or self.creditaccount == SALESJOURNAL:
-            return "70"
+            return SALESJOURNAL_CODE
 
     def getTransactionType(self):
 
@@ -390,8 +390,10 @@ if not os.path.exists(CONFIGFILE):
     Config.set('ACCOUNTS', 'CASH', '1000,1001,1002,1003')
     Config.set('ACCOUNTS', 'BANK', '1200,1201,1202,1203')
     Config.set('ACCOUNTS', 'INTERIM', '1360')
+    Config.set('ACCOUNTS', 'INTERIMJOUNAL_CODE', '90')
     Config.set('ACCOUNTS', 'DEBTORS', '12000')
     Config.set('ACCOUNTS', 'SALESJOURNAL', '1300')
+    Config.set('ACCOUNTS', 'SALESJOURNAL_CODE', '70')
 
     Config.add_section('VATIDS')
     Config.set('VATIDS', 'VAT_LOW', '1,6')
@@ -415,8 +417,10 @@ OUTPUTDIR_BACKUP = ConfigSectionMap("DIRS")['outputdir_backup']
 CASH_ACCOUNTS = ConfigSectionMap("ACCOUNTS")['cash'].split(',')
 BANK_ACCOUNTS = ConfigSectionMap("ACCOUNTS")['bank'].split(',')
 INTERIM_ACCOUNT = ConfigSectionMap("ACCOUNTS")['interim']
+INTERIMJOURNAL_CODE = ConfigSectionMap("ACCOUNTS")['interimjournal_code']
 DEBTORS_ACCOUNTS = int(ConfigSectionMap("ACCOUNTS")['debtors'])
 SALESJOURNAL = ConfigSectionMap("ACCOUNTS")['salesjournal']
+SALESJOURNAL_CODE = ConfigSectionMap("ACCOUNTS")['salesjournal_code']
 
 ACCOUNTS = CASH_ACCOUNTS + BANK_ACCOUNTS
 
