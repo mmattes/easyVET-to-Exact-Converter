@@ -91,8 +91,9 @@ class Booking(object):
         elif vatcode == "202":
             return VAT_OUTEU[0]
         else:
-            print "ERROR: UNKOWN VATCODE"
-            return ""
+            print "ERROR: UNKOWN VATCODE \" %s \" IN FILES TO CONVERT" % vatcode
+            sys.exit(1)
+            
 
     def getRelation(self, debitaccount, creditaccount):
         if int(debitaccount) >= DEBTORS_ACCOUNTS:
