@@ -2,7 +2,7 @@
 	 "folders":
     [
         {
-            "folder_exclude_patterns": ["Daten","INPUT","OUTPUT","OUTPUT_BACKUP"],
+            "folder_exclude_patterns": ["INPUT","OUTPUT","OUTPUT_BACKUP"],
             "follow_symlinks": true
         }        
     ]
