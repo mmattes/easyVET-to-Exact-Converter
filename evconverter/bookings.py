@@ -3,6 +3,7 @@ import time
 import os
 import sys
 import shutil
+import version
 
 from lxml.builder import E
 from lxml import etree
@@ -465,8 +466,7 @@ for f in filelist:
 
 cls()
 
-print "# BOOKKEEPING CONVERTER V0.5"
-print version
+print "# BOOKKEEPING CONVERTER {0}".format(version.__version__.split('-')[0])
 print "# converts .txt files from easyVET to .xml files for exact"
 print '##########################################################################\n'
 print "Please place the BuchungF1.txt and DebitorF1.txt export file from easyVET in the {0} " \
