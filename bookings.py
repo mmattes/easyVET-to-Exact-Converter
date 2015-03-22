@@ -19,6 +19,15 @@ class Account(object):
         self.name = name
         self.searchcode = searchcode
 
+    def __getitem__(self, index):
+        return self.code[index]
+
+    def __setitem__(self, index, value):
+        self.code[index] = value
+
+    def __str__(self):
+        return "{0}, {1}".format(self.code, self.name)
+
 
 #
 # CLASS GLTransactions
@@ -91,7 +100,7 @@ class Booking(object):
         elif vatcode == "202":
             return VAT_OUTEU[0]
         else:
-            print "ERROR: UNKOWN VATCODE \" %s \" IN FILES TO CONVERT" % vatcode
+            print "ERROR: UNKOWN VATCODE \" {0} \" IN FILES TO CONVERT".format(vatcode)
             sys.exit(1)
 
     def getRelation(self, debitaccount, creditaccount):
@@ -262,6 +271,7 @@ def genAccounts():
 
     acctocreate = open(OUTPUTDIR + "AccountsToCreate.txt", "w")
     Accounts = []
+    AccountsToCreate = []
 
     fobj.readline()
     for line in fobj:
@@ -288,10 +298,16 @@ def genAccounts():
             Accounts.append(Account(code.decode("utf-8", "ignore"), name.decode("utf-8", "ignore"),
                                     searchcode.decode("utf-8", "ignore")))
         elif code != "" and int(code) < DEBTORS_ACCOUNTS:
-            acctocreate.write(line)
+            AccountsToCreate.append(Account(code.decode("utf-8", "ignore"),
+                                    name.decode("utf-8", "ignore"),
+                                    searchcode.decode("utf-8", "ignore")))
 
     fobj.close()
-    acctocreate.close
+
+    for account in sorted(AccountsToCreate, key=lambda account: account[0]):
+        acctocreate.write(str("{0}\r\n".format(account)))
+
+    acctocreate.close()
 
     result = []
     for a in Accounts:
@@ -360,9 +376,9 @@ def ConfigSectionMap(section):
         try:
             dict1[option] = Config.get(section, option)
             if dict1[option] == -1:
-                DebugPrint("skip: %s" % option)
+                DebugPrint("skip: {0}".format(option))
         except:
-            print("exception on %s!" % option)
+            print("exception on {0}!".format(option))
             dict1[option] = None
     return dict1
 
@@ -448,11 +464,11 @@ for f in filelist:
 
 cls()
 
-print "# BOOKKEEPING CONVERTER V0.4"
+print "# BOOKKEEPING CONVERTER V0.5"
 print "# converts .txt files from easyVET to .xml files for exact"
 print '##########################################################################\n'
-print "Please place the BuchungF1.txt and DebitorF1.txt export file from easyVET in the %s " \
-      "Folder and press any key to continue" % INPUTDIR
+print "Please place the BuchungF1.txt and DebitorF1.txt export file from easyVET in the {0} " \
+      "Folder and press any key to continue".format(INPUTDIR)
 
 raw_input()
 
@@ -462,9 +478,9 @@ print "Files will be converted....\n\n"
 makeXMLAccounts()
 newbookingid = makeXMLTransactions()
 print "\n\nConversion finished!\n\n"
-print "WARNING! Files to import have been created in the %s Folder. Please make sure that all " \
+print "WARNING! Files to import have been created in the {0} Folder. Please make sure that all " \
       "accounts which are listed in the file AccountsToCreate.txt are created UP FRONT in " \
-      "exact\n\n" % OUTPUTDIR
+      "exact\n\n".format(OUTPUTDIR)
 
 i = str(raw_input("""Please import files now to EXACT. Was the import sucessfull confirm it with y
                      otherwise enter n """))
@@ -479,7 +495,9 @@ if i == "y":
 
     cls()
 
-    print "Export and Import was sucessfull files will be now backuped to %s folder" % OUTPUTDIR
+    print "Export and Import was sucessfull files will be now backuped to {0} " \
+          "folder".format(OUTPUTDIR)
+
     filelist = [f for f in os.listdir(OUTPUTDIR)]
     for f in filelist:
         shutil.copy(OUTPUTDIR+f, OUTPUTDIR_BACKUP+timestamp+"_"+f[:-4]+".xml")
@@ -490,4 +508,3 @@ raw_input("Press any key to close the converter")
 # TODO: User Interface
 # TODO: XML API: https://developers.exactonline.com/#XMLIntro.html
 # TODO: Per API pruefen ob alle Konten angelegt
-# TODO: ACCOUNTS TO CREATE SORTIEREN
