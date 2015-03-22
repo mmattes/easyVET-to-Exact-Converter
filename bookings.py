@@ -464,7 +464,7 @@ for f in filelist:
 
 cls()
 
-print "# BOOKKEEPING CONVERTER V0.4"
+print "# BOOKKEEPING CONVERTER V0.5"
 print "# converts .txt files from easyVET to .xml files for exact"
 print '##########################################################################\n'
 print "Please place the BuchungF1.txt and DebitorF1.txt export file from easyVET in the {0} " \
