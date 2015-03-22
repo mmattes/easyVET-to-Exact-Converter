@@ -2,3 +2,9 @@
 *INPUT/
 *OUTPUT*/
 evconverter/version.pyc
+dist/
+version.pyc
+RELEASE-VERSION
+build/
+evconverter.egg-info/
+evconverter/__init__.pyc

@@ -3,11 +3,13 @@ import time
 import os
 import sys
 import shutil
-import version
 
 from lxml.builder import E
 from lxml import etree
 from ConfigParser import *
+
+version_file = open(os.path.join(os.path.dirname(__file__), '../', 'RELEASE-VERSION'))
+version = version_file.read().strip().split('-')[0]
 
 
 #
@@ -390,121 +392,123 @@ def ConfigSectionMap(section):
 # Zuerst die Konfiguration dann der aufruf der einzelnen Programme
 ##########################################################################
 
-CONFIGFILE = "./config.ini"
+if __name__ == "__main__" :
 
-if not os.path.exists(CONFIGFILE):
-    cfgfile = open("./config.ini", "w")
-    Config = ConfigParser()
+    CONFIGFILE = "./config.ini"
 
-    Config.add_section('GENERAL')
-    Config.set('GENERAL', 'SPLIT_BOOKINGS_INTO', '1000')
+    if not os.path.exists(CONFIGFILE):
+        cfgfile = open("./config.ini", "w")
+        Config = ConfigParser()
 
-    Config.add_section('DIRS')
-    Config.set('DIRS', 'INPUTDIR', './INPUT/')
-    Config.set('DIRS', 'OUTPUTDIR', './OUTPUT/')
-    Config.set('DIRS', 'OUTPUTDIR_BACKUP', './OUTPUT_BACKUP/')
+        Config.add_section('GENERAL')
+        Config.set('GENERAL', 'SPLIT_BOOKINGS_INTO', '1000')
 
-    Config.add_section('ACCOUNTS')
-    Config.set('ACCOUNTS', 'CASH', '1000,1001,1002,1003')
-    Config.set('ACCOUNTS', 'BANK', '1200,1201,1202,1203')
-    Config.set('ACCOUNTS', 'INTERIM', '1360')
-    Config.set('ACCOUNTS', 'INTERIMJOUNAL_CODE', '90')
-    Config.set('ACCOUNTS', 'DEBTORS', '12000')
-    Config.set('ACCOUNTS', 'SALESJOURNAL', '1300')
-    Config.set('ACCOUNTS', 'SALESJOURNAL_CODE', '70')
+        Config.add_section('DIRS')
+        Config.set('DIRS', 'INPUTDIR', './INPUT/')
+        Config.set('DIRS', 'OUTPUTDIR', './OUTPUT/')
+        Config.set('DIRS', 'OUTPUTDIR_BACKUP', './OUTPUT_BACKUP/')
 
-    Config.add_section('VATIDS')
-    Config.set('VATIDS', 'VAT_LOW', '1,6')
-    Config.set('VATIDS', 'VAT_HIGH', '2,21')
-    Config.set('VATIDS', 'VAT_ZERO', '0,0')
-    Config.set('VATIDS', 'VAT_INEU', '7,0')
-    Config.set('VATIDS', 'VAT_OUTEU', '6,0')
+        Config.add_section('ACCOUNTS')
+        Config.set('ACCOUNTS', 'CASH', '1000,1001,1002,1003')
+        Config.set('ACCOUNTS', 'BANK', '1200,1201,1202,1203')
+        Config.set('ACCOUNTS', 'INTERIM', '1360')
+        Config.set('ACCOUNTS', 'INTERIMJOUNAL_CODE', '90')
+        Config.set('ACCOUNTS', 'DEBTORS', '12000')
+        Config.set('ACCOUNTS', 'SALESJOURNAL', '1300')
+        Config.set('ACCOUNTS', 'SALESJOURNAL_CODE', '70')
 
-    Config.add_section('COUNTERS')
-    Config.set('COUNTERS', 'BOOKINGID', '1')
+        Config.add_section('VATIDS')
+        Config.set('VATIDS', 'VAT_LOW', '1,6')
+        Config.set('VATIDS', 'VAT_HIGH', '2,21')
+        Config.set('VATIDS', 'VAT_ZERO', '0,0')
+        Config.set('VATIDS', 'VAT_INEU', '7,0')
+        Config.set('VATIDS', 'VAT_OUTEU', '6,0')
 
-    Config.write(cfgfile)
-    cfgfile.close()
+        Config.add_section('COUNTERS')
+        Config.set('COUNTERS', 'BOOKINGID', '1')
 
-maxBookingsPerFile = int(ConfigSectionMap("GENERAL")['split_bookings_into'])
+        Config.write(cfgfile)
+        cfgfile.close()
 
-INPUTDIR = ConfigSectionMap("DIRS")['inputdir']
-OUTPUTDIR = ConfigSectionMap("DIRS")['outputdir']
-OUTPUTDIR_BACKUP = ConfigSectionMap("DIRS")['outputdir_backup']
+    maxBookingsPerFile = int(ConfigSectionMap("GENERAL")['split_bookings_into'])
 
-CASH_ACCOUNTS = ConfigSectionMap("ACCOUNTS")['cash'].split(',')
-BANK_ACCOUNTS = ConfigSectionMap("ACCOUNTS")['bank'].split(',')
-INTERIM_ACCOUNT = ConfigSectionMap("ACCOUNTS")['interim']
-INTERIMJOURNAL_CODE = ConfigSectionMap("ACCOUNTS")['interimjournal_code']
-DEBTORS_ACCOUNTS = int(ConfigSectionMap("ACCOUNTS")['debtors'])
-SALESJOURNAL = ConfigSectionMap("ACCOUNTS")['salesjournal']
-SALESJOURNAL_CODE = ConfigSectionMap("ACCOUNTS")['salesjournal_code']
+    INPUTDIR = ConfigSectionMap("DIRS")['inputdir']
+    OUTPUTDIR = ConfigSectionMap("DIRS")['outputdir']
+    OUTPUTDIR_BACKUP = ConfigSectionMap("DIRS")['outputdir_backup']
 
-ACCOUNTS = CASH_ACCOUNTS + BANK_ACCOUNTS
+    CASH_ACCOUNTS = ConfigSectionMap("ACCOUNTS")['cash'].split(',')
+    BANK_ACCOUNTS = ConfigSectionMap("ACCOUNTS")['bank'].split(',')
+    INTERIM_ACCOUNT = ConfigSectionMap("ACCOUNTS")['interim']
+    INTERIMJOURNAL_CODE = ConfigSectionMap("ACCOUNTS")['interimjournal_code']
+    DEBTORS_ACCOUNTS = int(ConfigSectionMap("ACCOUNTS")['debtors'])
+    SALESJOURNAL = ConfigSectionMap("ACCOUNTS")['salesjournal']
+    SALESJOURNAL_CODE = ConfigSectionMap("ACCOUNTS")['salesjournal_code']
 
-VAT_LOW = ConfigSectionMap("VATIDS")['vat_low'].split(',')
-VAT_HIGH = ConfigSectionMap("VATIDS")['vat_high'].split(',')
-VAT_ZERO = ConfigSectionMap("VATIDS")['vat_zero'].split(',')
-VAT_INEU = ConfigSectionMap("VATIDS")['vat_ineu'].split(',')
-VAT_OUTEU = ConfigSectionMap("VATIDS")['vat_outeu'].split(',')
+    ACCOUNTS = CASH_ACCOUNTS + BANK_ACCOUNTS
 
-ALL_VAT_CODES = (VAT_LOW, VAT_HIGH, VAT_ZERO, VAT_INEU, VAT_OUTEU)
+    VAT_LOW = ConfigSectionMap("VATIDS")['vat_low'].split(',')
+    VAT_HIGH = ConfigSectionMap("VATIDS")['vat_high'].split(',')
+    VAT_ZERO = ConfigSectionMap("VATIDS")['vat_zero'].split(',')
+    VAT_INEU = ConfigSectionMap("VATIDS")['vat_ineu'].split(',')
+    VAT_OUTEU = ConfigSectionMap("VATIDS")['vat_outeu'].split(',')
 
-BOOKINGID = int(ConfigSectionMap("COUNTERS")['bookingid'])
+    ALL_VAT_CODES = (VAT_LOW, VAT_HIGH, VAT_ZERO, VAT_INEU, VAT_OUTEU)
 
-timestamp = time.strftime("%Y_%m_%d_%H_%M_%S")
+    BOOKINGID = int(ConfigSectionMap("COUNTERS")['bookingid'])
 
-ensure_dir(INPUTDIR)
-ensure_dir(OUTPUTDIR)
-ensure_dir(OUTPUTDIR_BACKUP)
+    timestamp = time.strftime("%Y_%m_%d_%H_%M_%S")
 
-# Zuerst alle alten Daten im OUTPUT Verzeichniss loeschen
-filelist = [f for f in os.listdir(OUTPUTDIR)]
+    ensure_dir(INPUTDIR)
+    ensure_dir(OUTPUTDIR)
+    ensure_dir(OUTPUTDIR_BACKUP)
 
-for f in filelist:
-    os.remove(OUTPUTDIR+f)
+    # Zuerst alle alten Daten im OUTPUT Verzeichniss loeschen
+    filelist = [f for f in os.listdir(OUTPUTDIR)]
 
-cls()
-
-print "# BOOKKEEPING CONVERTER {0}".format(version.__version__.split('-')[0])
-print "# converts .txt files from easyVET to .xml files for exact"
-print '##########################################################################\n'
-print "Please place the BuchungF1.txt and DebitorF1.txt export file from easyVET in the {0} " \
-      "Folder and press any key to continue".format(INPUTDIR)
-
-raw_input()
-
-cls()
-
-print "Files will be converted....\n\n"
-makeXMLAccounts()
-newbookingid = makeXMLTransactions()
-print "\n\nConversion finished!\n\n"
-print "WARNING! Files to import have been created in the {0} Folder. Please make sure that all " \
-      "accounts which are listed in the file AccountsToCreate.txt are created UP FRONT in " \
-      "exact\n\n".format(OUTPUTDIR)
-
-i = str(raw_input("""Please import files now to EXACT. Was the import sucessfull confirm it with y
-                     otherwise enter n """))
-
-if i == "y":
-    Config = ConfigParser()
-    Config.read(CONFIGFILE)
-    Config.set('COUNTERS', 'BOOKINGID', str(newbookingid))
-    cfgfile = open("./config.ini", "w")
-    Config.write(cfgfile)
-    cfgfile.close()
+    for f in filelist:
+        os.remove(OUTPUTDIR+f)
 
     cls()
 
-    print "Export and Import was sucessfull files will be now backuped to {0} " \
-          "folder".format(OUTPUTDIR)
+    print "# BOOKKEEPING CONVERTER {0}".format(version)
+    print "# converts .txt files from easyVET to .xml files for exact"
+    print '##########################################################################\n'
+    print "Please place the BuchungF1.txt and DebitorF1.txt export file from easyVET in the {0} " \
+          "Folder and press any key to continue".format(INPUTDIR)
 
-    filelist = [f for f in os.listdir(OUTPUTDIR)]
-    for f in filelist:
-        shutil.copy(OUTPUTDIR+f, OUTPUTDIR_BACKUP+timestamp+"_"+f[:-4]+".xml")
+    raw_input()
 
-raw_input("Press any key to close the converter")
+    cls()
+
+    print "Files will be converted....\n\n"
+    makeXMLAccounts()
+    newbookingid = makeXMLTransactions()
+    print "\n\nConversion finished!\n\n"
+    print "WARNING! Files to import have been created in the {0} Folder. Please make sure that " \
+          "all accounts which are listed in the file AccountsToCreate.txt are created UP FRONT " \
+          "in exact\n\n".format(OUTPUTDIR)
+
+    i = str(raw_input("""Please import files now to EXACT. Was the import sucessfull confirm it
+                         with y otherwise enter n """))
+
+    if i == "y":
+        Config = ConfigParser()
+        Config.read(CONFIGFILE)
+        Config.set('COUNTERS', 'BOOKINGID', str(newbookingid))
+        cfgfile = open("./config.ini", "w")
+        Config.write(cfgfile)
+        cfgfile.close()
+
+        cls()
+
+        print "Export and Import was sucessfull files will be now backuped to {0} " \
+              "folder".format(OUTPUTDIR)
+
+        filelist = [f for f in os.listdir(OUTPUTDIR)]
+        for f in filelist:
+            shutil.copy(OUTPUTDIR+f, OUTPUTDIR_BACKUP+timestamp+"_"+f[:-4]+".xml")
+
+    raw_input("Press any key to close the converter")
 
 # TODO: Export fuer mehrere firmen
 # TODO: User Interface
