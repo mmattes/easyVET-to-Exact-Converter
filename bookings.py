@@ -467,8 +467,8 @@ cls()
 print "# BOOKKEEPING CONVERTER V0.4"
 print "# converts .txt files from easyVET to .xml files for exact"
 print '##########################################################################\n'
-print "Please place the BuchungF1.txt and DebitorF1.txt export file from easyVET in the %s " \
-      "Folder and press any key to continue" % INPUTDIR
+print "Please place the BuchungF1.txt and DebitorF1.txt export file from easyVET in the {0} " \
+      "Folder and press any key to continue".format(INPUTDIR)
 
 raw_input()
 
@@ -478,9 +478,9 @@ print "Files will be converted....\n\n"
 makeXMLAccounts()
 newbookingid = makeXMLTransactions()
 print "\n\nConversion finished!\n\n"
-print "WARNING! Files to import have been created in the %s Folder. Please make sure that all " \
+print "WARNING! Files to import have been created in the {0} Folder. Please make sure that all " \
       "accounts which are listed in the file AccountsToCreate.txt are created UP FRONT in " \
-      "exact\n\n" % OUTPUTDIR
+      "exact\n\n".format(OUTPUTDIR)
 
 i = str(raw_input("""Please import files now to EXACT. Was the import sucessfull confirm it with y
                      otherwise enter n """))
@@ -495,7 +495,9 @@ if i == "y":
 
     cls()
 
-    print "Export and Import was sucessfull files will be now backuped to %s folder" % OUTPUTDIR
+    print "Export and Import was sucessfull files will be now backuped to {0} " \
+          "folder".format(OUTPUTDIR)
+
     filelist = [f for f in os.listdir(OUTPUTDIR)]
     for f in filelist:
         shutil.copy(OUTPUTDIR+f, OUTPUTDIR_BACKUP+timestamp+"_"+f[:-4]+".xml")
@@ -506,4 +508,3 @@ raw_input("Press any key to close the converter")
 # TODO: User Interface
 # TODO: XML API: https://developers.exactonline.com/#XMLIntro.html
 # TODO: Per API pruefen ob alle Konten angelegt
-# TODO: ACCOUNTS TO CREATE SORTIEREN
