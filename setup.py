@@ -9,13 +9,14 @@ extra = {}
 
 setup(
     name="evconverter",
-    packages=[],
+    packages=['evconverter'],
+    zip_save=False,
     include_package_data=True,
     version="0.5.0",
     description="Converter for Bookkeeping data exported from a PMS",
     author="Markus Mattes",
     author_email="mmattes87@gmail.com",
-    url="http://github.com/darcymason/pydicom",
+    url="https://github.com/mmattes/easyVET-to-Exact-Converter",
     license="MIT license",
     keywords="easyVET exact bookkeeping",
     classifiers=[
