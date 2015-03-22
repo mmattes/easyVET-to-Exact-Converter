@@ -19,6 +19,15 @@ class Account(object):
         self.name = name
         self.searchcode = searchcode
 
+    def __getitem__(self, index):
+        return self.code[index]
+
+    def __setitem__(self, index, value):
+        self.code[index] = value
+
+    def __str__(self):
+        return "{0}, {1}".format(self.code, self.name)
+
 
 #
 # CLASS GLTransactions
@@ -262,6 +271,7 @@ def genAccounts():
 
     acctocreate = open(OUTPUTDIR + "AccountsToCreate.txt", "w")
     Accounts = []
+    AccountsToCreate = []
 
     fobj.readline()
     for line in fobj:
@@ -288,10 +298,16 @@ def genAccounts():
             Accounts.append(Account(code.decode("utf-8", "ignore"), name.decode("utf-8", "ignore"),
                                     searchcode.decode("utf-8", "ignore")))
         elif code != "" and int(code) < DEBTORS_ACCOUNTS:
-            acctocreate.write(line)
+            AccountsToCreate.append(Account(code.decode("utf-8", "ignore"),
+                                    name.decode("utf-8", "ignore"),
+                                    searchcode.decode("utf-8", "ignore")))
 
     fobj.close()
-    acctocreate.close
+
+    for account in sorted(AccountsToCreate, key=lambda account: account[0]):
+        acctocreate.write(str("{0}\r\n".format(account)))
+
+    acctocreate.close()
 
     result = []
     for a in Accounts:
