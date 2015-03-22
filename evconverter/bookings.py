@@ -6,6 +6,10 @@ import os
 import sys
 from ConfigParser import *
 import shutil
+import pkg_resources  # part of setuptools
+
+
+version = pkg_resources.require("MyProject")[0].version
 
 
 #
@@ -465,6 +469,7 @@ for f in filelist:
 cls()
 
 print "# BOOKKEEPING CONVERTER V0.5"
+print version
 print "# converts .txt files from easyVET to .xml files for exact"
 print '##########################################################################\n'
 print "Please place the BuchungF1.txt and DebitorF1.txt export file from easyVET in the {0} " \
