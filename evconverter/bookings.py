@@ -3,13 +3,13 @@ import time
 import os
 import sys
 import shutil
+import pkg_resources  # part of setuptools
 
 from lxml.builder import E
 from lxml import etree
 from ConfigParser import *
 
-version_file = open(os.path.join(os.path.dirname(__file__), '../', 'RELEASE-VERSION'))
-version = version_file.read().strip().split('-')[0]
+version = pkg_resources.require("evconverter")[0].version
 
 
 #
