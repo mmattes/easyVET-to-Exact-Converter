@@ -1,15 +1,12 @@
-from lxml.builder import E
-from lxml import etree
 import datetime
 import time
 import os
 import sys
-from ConfigParser import *
 import shutil
-import pkg_resources  # part of setuptools
 
-
-version = pkg_resources.require("MyProject")[0].version
+from lxml.builder import E
+from lxml import etree
+from ConfigParser import *
 
 
 #
