@@ -14,12 +14,8 @@ from lxml import etree
 version = pkg_resources.require("evconverter")[0].version
 
 
-#
-# CLASS Accounts
-# Aufbau wie es Exact benoetigt
-##########################################################################
 class Account(object):
-
+    """ Class to hold the Account objects like Exact needs it, this is a minimum setup"""
     def __init__(self, code, name, searchcode):
         self.code = code
         self.name = name
@@ -35,26 +31,18 @@ class Account(object):
         return "{0}, {1}".format(self.code, self.name)
 
 
-#
-# CLASS GLTransactions
-# Aufbau wie es Exact benoetigt
-##########################################################################
 class GLTransaction(object):
-
+    """ Class to hold the GLTransaction objects like Exact needs it, this is a minimum setup"""
     def __init__(self, booking, journal, date):
         self.booking = booking
         self.journal = journal
         self.date = date
         self.GLTransactionLines = []
 
-#
-# CLASS GLTransactionLine
-# Aufbau wie es Exact benoetigt
-##########################################################################
-
 
 class GLTransactionLine(object):
-
+    """ Class to hold the GLTransactionLine objects, a sub of GLTransactions like Exact needs it,
+    this is a minimum setup"""
     def __init__(self, glaccount, description, relation, amount, vatcode, transactiontype):
         self.glaccount = glaccount
         self.description = description
@@ -64,13 +52,9 @@ class GLTransactionLine(object):
         self.transactiontype = transactiontype
 
 
-#
-# CLASS Booking
-# Notwendig um zeile fuer Zeile aus den Buchungen die easyVET Exportiert
-# einzulesen und dann zu verarbeiten
-##########################################################################
 class Booking(object):
-
+    """ Class Booking, helper class to read the Booking lines from the export of easyVET
+    """
     def __init__(self, amount, currency, vatcode, creditaccount, description, date, debitaccount,
                  remark):
         self.amount = amount.replace(".", "").replace(",", ".")
@@ -198,13 +182,12 @@ class Booking(object):
         return datetime.date(int(self.date[6:]), int(self.date[3:-5]),
                              int(self.date[:-8])).isoformat()
 
-#
-# Generiert aus den buchungen die eigentlichen Exact Konformen
-# Transaktionen und verarbeitet diese dann
-##########################################################################
-
 
 def genGLTransactions(Bookings, startID):
+    """
+    Generates out of the Bookings created from the TXT file the propper Exact Bookings in XML
+    Format
+    """
     GLTransactions = []
     a = ""
 
@@ -229,13 +212,11 @@ def genGLTransactions(Bookings, startID):
             a.date), *appendGLTransactionLines(a), entry=a.booking))
     return result
 
-#
-# Unterfunktion zu genGLTransactions() da diese Funktion die eigentlichen
-# Buchungszeilen ins Exact konforme XML Format bringt
-##########################################################################
-
 
 def appendGLTransactionLines(GLTransaction):
+    """
+    Subfunction to genGLTransactions(), creates the booking lines of the Exact Format
+    """
     a = GLTransaction
 
     result = []
@@ -358,9 +339,9 @@ def makeXMLAccounts(file, output, config):
     fobj.close()
 
 
-#
-# Helper Funktionen
-##########################################################################
+"""
+HELPER FUNCTIONS
+"""
 
 
 def cls():
@@ -373,11 +354,6 @@ def ensure_dir(folder):
     if not os.path.exists(dir):
         os.makedirs(dir)
 
-
-#
-# MAIN SECTION
-# Zuerst die Konfiguration dann der aufruf der einzelnen Programme
-##########################################################################
 
 if __name__ == "__main__" :
 
