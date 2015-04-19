@@ -1,3 +1,6 @@
+# !/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import datetime
 import time
 import os
@@ -7,7 +10,6 @@ import pkg_resources  # part of setuptools
 
 from lxml.builder import E
 from lxml import etree
-from ConfigParser import *
 
 version = pkg_resources.require("evconverter")[0].version
 
@@ -197,22 +199,12 @@ class Booking(object):
                              int(self.date[:-8])).isoformat()
 
 #
-# Dient zum loeschen des screens
-##########################################################################
-
-
-def cls():
-    os.system('cls' if os.name == 'nt' else 'clear')
-    return ''
-
-#
 # Generiert aus den buchungen die eigentlichen Exact Konformen
 # Transaktionen und verarbeitet diese dann
 ##########################################################################
 
 
 def genGLTransactions(Bookings, startID):
-
     GLTransactions = []
     a = ""
 
@@ -266,14 +258,14 @@ def appendGLTransactionLines(GLTransaction):
     return result
 
 
-def genAccounts():
+def genAccounts(file, output, config):
     try:
-        fobj = open(INPUTDIR + "DebitorF1.txt", "r")
+        fobj = open(file, "r")
     except Exception, e:
         print e
         sys.exit(1)
 
-    acctocreate = open(OUTPUTDIR + "AccountsToCreate.txt", "w")
+    acctocreate = open(output + "AccountsToCreate.txt", "w")
     Accounts = []
     AccountsToCreate = []
 
@@ -298,10 +290,10 @@ def genAccounts():
         else:
             searchcode = ""
 
-        if code != "" and int(code) >= DEBTORS_ACCOUNTS:
+        if code != "" and int(code) >= config["ACCOUNTS"]["debtors"]:
             Accounts.append(Account(code.decode("utf-8", "ignore"), name.decode("utf-8", "ignore"),
                                     searchcode.decode("utf-8", "ignore")))
-        elif code != "" and int(code) < DEBTORS_ACCOUNTS:
+        elif code != "" and int(code) < config["ACCOUNTS"]["debtors"]:
             AccountsToCreate.append(Account(code.decode("utf-8", "ignore"),
                                     name.decode("utf-8", "ignore"),
                                     searchcode.decode("utf-8", "ignore")))
@@ -320,11 +312,12 @@ def genAccounts():
     return result
 
 
-def makeXMLTransactions():
-    currentBookingID = BOOKINGID
+def makeXMLTransactions(file, output, config):
+    currentBookingID = config["COUNTERS"]["bookingid"]
+    maxBookingsPerFile = config["GENERAL"]["split_bookings_into"]
 
     try:
-        fobj = open(INPUTDIR + "BuchungF1.txt", "r")
+        fobj = open(file, "r")
     except Exception, e:
         print e
         sys.exit(1)
@@ -345,46 +338,40 @@ def makeXMLTransactions():
 
         xml = E.GLTransactions(*genGLTransactions(
             Bookings[x * maxBookingsPerFile:(x + 1) * maxBookingsPerFile], currentBookingID))
-        fobj = open(OUTPUTDIR + "GLTransactions" + str(x) + ".xml", "w")
+        fobj = open(output + "GLTransactions" + str(x) + ".xml", "w")
         fobj.write("<eExact>\n")
         fobj.write(etree.tostring(xml, pretty_print=True))
         fobj.write("</eExact>")
         fobj.close()
         currentBookingID += maxBookingsPerFile
 
-    return BOOKINGID + len(Bookings)
+    return currentBookingID + len(Bookings)
 
 
-def makeXMLAccounts():
-    xml = E.Accounts(*genAccounts())
+def makeXMLAccounts(file, output, config):
+    xml = E.Accounts(*genAccounts(file, output, config))
 
-    fobj = open(OUTPUTDIR + "Relaties.xml", "w")
+    fobj = open(output + "Relaties.xml", "w")
     fobj.write("<eExact>")
     fobj.write(etree.tostring(xml, pretty_print=True))
     fobj.write("</eExact>")
     fobj.close()
 
 
+#
+# Helper Funktionen
+##########################################################################
+
+
+def cls():
+    os.system('cls' if os.name == 'nt' else 'clear')
+    return ''
+
+
 def ensure_dir(folder):
     dir = os.path.dirname(folder)
     if not os.path.exists(dir):
         os.makedirs(dir)
-
-
-def ConfigSectionMap(section):
-    Config = ConfigParser()
-    Config.read(CONFIGFILE)
-    dict1 = {}
-    options = Config.options(section)
-    for option in options:
-        try:
-            dict1[option] = Config.get(section, option)
-            if dict1[option] == -1:
-                DebugPrint("skip: {0}".format(option))
-        except:
-            print("exception on {0}!".format(option))
-            dict1[option] = None
-    return dict1
 
 
 #
@@ -394,79 +381,11 @@ def ConfigSectionMap(section):
 
 if __name__ == "__main__" :
 
-    CONFIGFILE = "./config.ini"
-
-    if not os.path.exists(CONFIGFILE):
-        cfgfile = open("./config.ini", "w")
-        Config = ConfigParser()
-
-        Config.add_section('GENERAL')
-        Config.set('GENERAL', 'SPLIT_BOOKINGS_INTO', '1000')
-
-        Config.add_section('DIRS')
-        Config.set('DIRS', 'INPUTDIR', './INPUT/')
-        Config.set('DIRS', 'OUTPUTDIR', './OUTPUT/')
-        Config.set('DIRS', 'OUTPUTDIR_BACKUP', './OUTPUT_BACKUP/')
-
-        Config.add_section('ACCOUNTS')
-        Config.set('ACCOUNTS', 'CASH', '1000,1001,1002,1003')
-        Config.set('ACCOUNTS', 'BANK', '1200,1201,1202,1203')
-        Config.set('ACCOUNTS', 'INTERIM', '1360')
-        Config.set('ACCOUNTS', 'INTERIMJOUNAL_CODE', '90')
-        Config.set('ACCOUNTS', 'DEBTORS', '12000')
-        Config.set('ACCOUNTS', 'SALESJOURNAL', '1300')
-        Config.set('ACCOUNTS', 'SALESJOURNAL_CODE', '70')
-
-        Config.add_section('VATIDS')
-        Config.set('VATIDS', 'VAT_LOW', '1,6')
-        Config.set('VATIDS', 'VAT_HIGH', '2,21')
-        Config.set('VATIDS', 'VAT_ZERO', '0,0')
-        Config.set('VATIDS', 'VAT_INEU', '7,0')
-        Config.set('VATIDS', 'VAT_OUTEU', '6,0')
-
-        Config.add_section('COUNTERS')
-        Config.set('COUNTERS', 'BOOKINGID', '1')
-
-        Config.write(cfgfile)
-        cfgfile.close()
-
-    maxBookingsPerFile = int(ConfigSectionMap("GENERAL")['split_bookings_into'])
-
-    INPUTDIR = ConfigSectionMap("DIRS")['inputdir']
-    OUTPUTDIR = ConfigSectionMap("DIRS")['outputdir']
-    OUTPUTDIR_BACKUP = ConfigSectionMap("DIRS")['outputdir_backup']
-
-    CASH_ACCOUNTS = ConfigSectionMap("ACCOUNTS")['cash'].split(',')
-    BANK_ACCOUNTS = ConfigSectionMap("ACCOUNTS")['bank'].split(',')
-    INTERIM_ACCOUNT = ConfigSectionMap("ACCOUNTS")['interim']
-    INTERIMJOURNAL_CODE = ConfigSectionMap("ACCOUNTS")['interimjournal_code']
-    DEBTORS_ACCOUNTS = int(ConfigSectionMap("ACCOUNTS")['debtors'])
-    SALESJOURNAL = ConfigSectionMap("ACCOUNTS")['salesjournal']
-    SALESJOURNAL_CODE = ConfigSectionMap("ACCOUNTS")['salesjournal_code']
-
-    ACCOUNTS = CASH_ACCOUNTS + BANK_ACCOUNTS
-
-    VAT_LOW = ConfigSectionMap("VATIDS")['vat_low'].split(',')
-    VAT_HIGH = ConfigSectionMap("VATIDS")['vat_high'].split(',')
-    VAT_ZERO = ConfigSectionMap("VATIDS")['vat_zero'].split(',')
-    VAT_INEU = ConfigSectionMap("VATIDS")['vat_ineu'].split(',')
-    VAT_OUTEU = ConfigSectionMap("VATIDS")['vat_outeu'].split(',')
-
-    ALL_VAT_CODES = (VAT_LOW, VAT_HIGH, VAT_ZERO, VAT_INEU, VAT_OUTEU)
-
-    BOOKINGID = int(ConfigSectionMap("COUNTERS")['bookingid'])
-
     timestamp = time.strftime("%Y_%m_%d_%H_%M_%S")
 
     ensure_dir(INPUTDIR)
     ensure_dir(OUTPUTDIR)
     ensure_dir(OUTPUTDIR_BACKUP)
-
-    # Zuerst alle alten Daten im OUTPUT Verzeichniss loeschen
-    filelist = [f for f in os.listdir(OUTPUTDIR)]
-
-    for f in filelist:
-        os.remove(OUTPUTDIR+f)
 
     cls()
 
@@ -481,8 +400,7 @@ if __name__ == "__main__" :
     cls()
 
     print "Files will be converted....\n\n"
-    makeXMLAccounts()
-    newbookingid = makeXMLTransactions()
+
     print "\n\nConversion finished!\n\n"
     print "WARNING! Files to import have been created in the {0} Folder. Please make sure that " \
           "all accounts which are listed in the file AccountsToCreate.txt are created UP FRONT " \
@@ -509,6 +427,7 @@ if __name__ == "__main__" :
             shutil.copy(OUTPUTDIR+f, OUTPUTDIR_BACKUP+timestamp+"_"+f[:-4]+".xml")
 
     raw_input("Press any key to close the converter")
+
 
 # TODO: Export fuer mehrere firmen
 # TODO: User Interface
